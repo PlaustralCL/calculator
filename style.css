@@ -11,12 +11,13 @@
 .calc-body {
   box-sizing: border-box;
   height: 625px;
-  width: 400px;
+  width: 410px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: lightblue;
   border-style: solid;
   
 }
@@ -25,10 +26,11 @@
   box-sizing: border-box;
   height: 29px;
   width: 400px;
-  padding-right: 10px;
   padding-left: 10px;
-  padding-top: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
   grid-area: parrot;
+  background-color: #dedede;
   text-align: right;
   font-size: 24px;
 }
@@ -37,14 +39,14 @@
   box-sizing: border-box;
   height: 100px;
   width: 400px;
-  margin-top: auto;
+  
   padding-right: 10px;
   padding-left: 10px;
   padding-top: 20px;
   grid-area: result;
+  background-color: #dedede;
   text-align: right;
   font-size: 36px;
-  border-style: solid;
 }
 
 .buttons {
