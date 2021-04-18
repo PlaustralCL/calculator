@@ -6,6 +6,7 @@ let statement = '';
 let operator = '';
 let numberList = /[0-9]/;
 let operatorTest = false;
+equalsTest = false;
 
 
 /** Functions */
@@ -50,7 +51,14 @@ function operate(operator, firstNumber, secondNumber) {
 }
 
 function handleClick(event){
-  console.log({equalsTest: operatorTest});
+  if (equalsTest === true) {
+    statement = '';
+    document.querySelector('#statement').textContent = '';
+    document.querySelector('#result').textContent = '';
+    numberA = [];
+    numberB = [];
+  }
+  equalsTest = false;
   if (event.target.id.search(/[0-9]/) !== -1) {
     if (operatorTest === false) {
       numberA.push(parseInt(event.target.id));
@@ -69,7 +77,8 @@ function handleClick(event){
     console.log(typeof(parseInt(numberA.join(''))));
     const result = operate(operator,
       parseInt(numberA.join('')), parseInt(numberB.join('')));
-    document.querySelector('#result').textContent = result;
+      document.querySelector('#result').textContent = result;
+      equalsTest = true;
       operatorTest = false;
       numberAns = result;
       return;
