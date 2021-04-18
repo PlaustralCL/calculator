@@ -8,6 +8,8 @@ let numberList = /[0-9]/;
 let operatorTest = false;
 equalsTest = false;
 
+/** Event Listeners */
+document.querySelector('.buttons').addEventListener('click', handleClick);
 
 /** Functions */
 
@@ -50,15 +52,20 @@ function operate(operator, firstNumber, secondNumber) {
   }
 }
 
+
+
+
 function handleClick(event){
+  if (event.target.id === 'clear') {
+    clearAll();
+    return;
+  }
+  
   if (equalsTest === true) {
-    statement = '';
-    document.querySelector('#statement').textContent = '';
-    document.querySelector('#result').textContent = '';
-    numberA = [];
-    numberB = [];
+    clearAll();
   }
   equalsTest = false;
+
   if (event.target.id.search(/[0-9]/) !== -1) {
     if (operatorTest === false) {
       numberA.push(parseInt(event.target.id));
@@ -93,7 +100,20 @@ function handleClick(event){
   
 }
 
-document.querySelector('.buttons').addEventListener('click', handleClick);
+function clearAll() {
+  statement = '';
+  document.querySelector('#statement').textContent = '';
+  document.querySelector('#result').textContent = '';
+  numberA = [];
+  numberB = [];
+  operatorTest = false;
+  equalsTest = false;
+  return;
+}
+
+
+
+
 
 // const key = document.querySelectorAll('.key');
 // key.forEach((button) => {
