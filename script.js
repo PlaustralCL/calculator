@@ -1,7 +1,7 @@
 /** Initialize global variables */
-let numberA = [];
-let numberB = [];
-let numberAns = [];
+let numberA = '';
+let numberB = '';
+let numberAns = '';
 let statement = '';
 let operator = '';
 let numberList = /[0-9]/;
@@ -98,9 +98,9 @@ function handleClick(event){
 
 function backspaceEntry() {
   if (operatorTest === false) {
-    numberA.pop();
+    numberA = numberA.slice(0, numberA.length - 1);
   } else {
-    numberB.pop();
+    numberB = numberB.slice(0, numberA.length - 1);
   }
   statement = statement.slice(0, statement.length - 1);
   document.querySelector('#statement').textContent = statement;
@@ -111,8 +111,8 @@ function clearAll() {
   statement = '';
   document.querySelector('#statement').textContent = '';
   document.querySelector('#result').textContent = '';
-  numberA = [];
-  numberB = [];
+  numberA = '';
+  numberB = '';
   operatorTest = false;
   equalsTest = false;
   return;
@@ -120,10 +120,10 @@ function clearAll() {
 
 function clearEntry() {
   if (operatorTest === false) {
-    numberA = [];
+    numberA = '';
     statement = '';
   } else {
-    numberB = [];
+    numberB = '';
     statement = statement.slice(0, statement.lastIndexOf(' ')) + ' ';
   }
   document.querySelector('#statement').textContent = statement;
@@ -135,25 +135,25 @@ function processEquals() {
     return;
   }
 
-  const result = operate(operator,
-      parseFloat(numberA.join('')), parseFloat(numberB.join('')));
+  const result = operate(operator, parseFloat(numberA), parseFloat(numberB));
     document.querySelector('#result').textContent = result;
     equalsTest = true;
     operatorTest = false;
-    numberA = Array.from(String(result));
-    numberB = [];
+    numberA = result.toString();
+    numberB = '';
     return;
 }
 
 function processNumber(numberId) {
   if (operatorTest === false) {
-    numberA.push(numberId);
+    numberA += numberId;
+    
     console.log({numberA});
     statement += numberId;
     document.querySelector('#statement').textContent = statement;
     return;
   } else {
-      numberB.push(numberId);
+      numberB += numberId;  
       console.log({numberB});
       statement += numberId;
       document.querySelector('#statement').textContent = statement;
@@ -169,12 +169,12 @@ function processOperator(operatorId) {
     operator = operatorId; // used for processEquals funcntion
     return;
   }
-  const result = operate(operator, parseInt(numberA.join('')), parseInt(numberB.join('')));
+  const result = operate(operator, parseInt(numberA), parseInt(numberB));
   document.querySelector('#result').textContent = result;
   operator = operatorId; // sets operator for next operation
-  numberA = Array.from(String(result));
+  numberA = result.toString();
   console.log(typeof numberA);
-  numberB = [];
+  numberB = '';
   operatorTest = true;
   return;
 }
