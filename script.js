@@ -56,28 +56,29 @@ function operate(operator, firstNumber, secondNumber) {
 
 
 function handleClick(event){
-  if (event.target.id === 'clear') {
-    clearAll();
-    return;
-  }
-  
   if (equalsTest === true) {
     clearAll();
   }
   equalsTest = false;
-
+  
   if (event.target.id.search(/[0-9]/) !== -1) {
-   processNumber(event.target.id);
-   return;
-  } else if (event.target.id ==='equals') {
+    processNumber(event.target.id);
+    return;
+  }
+  
+  switch (event.target.id) {
+    case 'clear':
+      clearAll();
+      return;
+      break;
+    case 'equals':
       processEquals();
       return;
-  } else {
+      break;
+    default:
       processOperator(event.target.id);
       return;
   }
-  
-  
 }
 
 function clearAll() {
