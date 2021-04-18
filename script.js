@@ -57,7 +57,7 @@ function operate(operator, firstNumber, secondNumber) {
 
 
 function handleClick(event){
-  if (equalsTest === true) {
+  if (equalsTest === true && event.target.id.search(/[0-9]/) !== -1) {
     clearAll();
   }
   equalsTest = false;
@@ -135,12 +135,17 @@ function clearEntry() {
 }
 
 function processEquals() {
+  if(numberA.length === 0 || numberB.length === 0) {
+    return;
+  }
+
   const result = operate(operator,
       parseFloat(numberA.join('')), parseFloat(numberB.join('')));
     document.querySelector('#result').textContent = result;
     equalsTest = true;
     operatorTest = false;
-    numberAns = result;
+    numberA = Array.from(String(result));
+    numberB = [];
     return;
 }
 
