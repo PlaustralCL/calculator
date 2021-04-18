@@ -67,19 +67,8 @@ function handleClick(event){
   equalsTest = false;
 
   if (event.target.id.search(/[0-9]/) !== -1) {
-    if (operatorTest === false) {
-      numberA.push(parseInt(event.target.id));
-      console.log({numberA});
-      statement += event.target.id;
-      document.querySelector('#statement').textContent = statement;
-      return;
-    } else {
-      numberB.push(parseInt(event.target.id));
-      console.log({numberB});
-      statement += event.target.id;
-      document.querySelector('#statement').textContent = statement;
-      return;
-    }
+   handleNumber(event.target.id);
+   return;
   } else if (event.target.id ==='equals') {
     console.log(typeof(parseInt(numberA.join(''))));
     const result = operate(operator,
@@ -111,7 +100,21 @@ function clearAll() {
   return;
 }
 
-
+function handleNumber(numberId) {
+  if (operatorTest === false) {
+    numberA.push(parseInt(numberId));
+    console.log({numberA});
+    statement += numberId;
+    document.querySelector('#statement').textContent = statement;
+    return;
+  } else {
+    numberB.push(parseInt(numberId));
+    console.log({numberB});
+    statement += numberId;
+    document.querySelector('#statement').textContent = statement;
+    return;
+  }
+}
 
 
 
