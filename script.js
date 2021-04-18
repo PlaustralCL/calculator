@@ -79,6 +79,10 @@ function handleClick(event){
       processEquals();
       return;
       break;
+    case 'decimal':
+      processNumber('.');
+      return;
+      break;
     default:
       processOperator(event.target.id);
       return;
@@ -100,7 +104,6 @@ function clearEntry() {
   if (operatorTest === false) {
     numberA = [];
     statement = '';
-    document.querySelector('#statement').textContent = statement;
   } else {
     numberB = [];
     statement = statement.slice(0, statement.lastIndexOf(' ')) + ' ';
@@ -110,15 +113,25 @@ function clearEntry() {
 
 }
 
+function processEquals() {
+  const result = operate(operator,
+      parseFloat(numberA.join('')), parseFloat(numberB.join('')));
+    document.querySelector('#result').textContent = result;
+    equalsTest = true;
+    operatorTest = false;
+    numberAns = result;
+    return;
+}
+
 function processNumber(numberId) {
   if (operatorTest === false) {
-    numberA.push(parseInt(numberId));
+    numberA.push(numberId);
     console.log({numberA});
     statement += numberId;
     document.querySelector('#statement').textContent = statement;
     return;
   } else {
-    numberB.push(parseInt(numberId));
+    numberB.push(numberId);
     console.log({numberB});
     statement += numberId;
     document.querySelector('#statement').textContent = statement;
@@ -126,15 +139,7 @@ function processNumber(numberId) {
   }
 }
 
-function processEquals() {
-    const result = operate(operator,
-        parseInt(numberA.join('')), parseInt(numberB.join('')));
-      document.querySelector('#result').textContent = result;
-      equalsTest = true;
-      operatorTest = false;
-      numberAns = result;
-      return;
-}
+
 
 function processOperator(operatorId) {
   statement += ` ${operatorId} `;
