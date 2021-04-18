@@ -71,6 +71,10 @@ function handleClick(event){
       clearAll();
       return;
       break;
+    case 'ce':
+      clearEntry();
+      return;
+      break;
     case 'equals':
       processEquals();
       return;
@@ -90,6 +94,20 @@ function clearAll() {
   operatorTest = false;
   equalsTest = false;
   return;
+}
+
+function clearEntry() {
+  if (operatorTest === false) {
+    numberA = [];
+    statement = '';
+    document.querySelector('#statement').textContent = statement;
+  } else {
+    numberB = [];
+    statement = statement.slice(0, statement.lastIndexOf(' ')) + ' ';
+  }
+  document.querySelector('#statement').textContent = statement;
+  return;
+
 }
 
 function processNumber(numberId) {
@@ -119,7 +137,6 @@ function processEquals() {
 }
 
 function processOperator(operatorId) {
-  
   statement += ` ${operatorId} `;
   document.querySelector('#statement').textContent = statement;
 
@@ -128,12 +145,10 @@ function processOperator(operatorId) {
     operator = operatorId; // used for processEquals funcntion
     return;
   }
-  
-  
+
   const result = operate(operator, parseInt(numberA.join('')), parseInt(numberB.join('')));
   document.querySelector('#result').textContent = result;
-  operator = operatorId;
-
+  operator = operatorId; // sets operator for next operation
   numberA = Array.from(String(result));
   console.log(typeof numberA);
   numberB = [];
