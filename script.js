@@ -73,11 +73,8 @@ function handleClick(event){
       processEquals();
       return;
   } else {
-    operator = event.target.id;
-    statement += ` ${event.target.id} `;
-    document.querySelector('#statement').textContent = statement;
-    operatorTest = true;
-    return;
+      processOperator(event.target.id);
+      return;
   }
   
   
@@ -121,6 +118,13 @@ function processEquals() {
       return;
 }
 
+function processOperator(operatorId) {
+  operator = operatorId;
+  statement += ` ${operatorId} `;
+  document.querySelector('#statement').textContent = statement;
+  operatorTest = true;
+  return;
+}
 
 // const key = document.querySelectorAll('.key');
 // key.forEach((button) => {
