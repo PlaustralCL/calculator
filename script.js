@@ -109,7 +109,6 @@ function processNumber(numberId) {
 }
 
 function processEquals() {
-  console.log(typeof(parseInt(numberA.join(''))));
     const result = operate(operator,
         parseInt(numberA.join('')), parseInt(numberB.join('')));
       document.querySelector('#result').textContent = result;
@@ -120,9 +119,24 @@ function processEquals() {
 }
 
 function processOperator(operatorId) {
-  operator = operatorId;
+  
   statement += ` ${operatorId} `;
   document.querySelector('#statement').textContent = statement;
+
+  if (operatorTest === false) {
+    operatorTest = true;
+    operator = operatorId; // used for processEquals funcntion
+    return;
+  }
+  
+  
+  const result = operate(operator, parseInt(numberA.join('')), parseInt(numberB.join('')));
+  document.querySelector('#result').textContent = result;
+  operator = operatorId;
+
+  numberA = Array.from(String(result));
+  console.log(typeof numberA);
+  numberB = [];
   operatorTest = true;
   return;
 }
