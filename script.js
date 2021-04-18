@@ -68,12 +68,19 @@ function handleClick(event){
   }
   
   switch (event.target.id) {
+    case 'buttons':
+      return;
+      break;
     case 'clear':
       clearAll();
       return;
       break;
     case 'ce':
       clearEntry();
+      return;
+      break;
+    case 'delete':
+      backspaceEntry();
       return;
       break;
     case 'equals':
@@ -88,6 +95,19 @@ function handleClick(event){
       processOperator(event.target.id);
       return;
   }
+}
+
+function backspaceEntry() {
+  if (operatorTest === false) {
+    numberA.pop();
+    
+  } else {
+    numberB.pop();
+   
+  }
+  statement = statement.slice(0, statement.length - 1);
+  document.querySelector('#statement').textContent = statement;
+  return;
 }
 
 function clearAll() {
