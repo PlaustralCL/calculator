@@ -49,7 +49,6 @@ function operate(operator, firstNumber, secondNumber) {
       break;
     default:
       return 'unknown';
-
   }
 }
 
@@ -100,10 +99,8 @@ function handleClick(event){
 function backspaceEntry() {
   if (operatorTest === false) {
     numberA.pop();
-    
   } else {
     numberB.pop();
-   
   }
   statement = statement.slice(0, statement.length - 1);
   document.querySelector('#statement').textContent = statement;
@@ -131,7 +128,6 @@ function clearEntry() {
   }
   document.querySelector('#statement').textContent = statement;
   return;
-
 }
 
 function processEquals() {
@@ -157,26 +153,22 @@ function processNumber(numberId) {
     document.querySelector('#statement').textContent = statement;
     return;
   } else {
-    numberB.push(numberId);
-    console.log({numberB});
-    statement += numberId;
-    document.querySelector('#statement').textContent = statement;
-    return;
+      numberB.push(numberId);
+      console.log({numberB});
+      statement += numberId;
+      document.querySelector('#statement').textContent = statement;
+      return;
   }
 }
-
-
 
 function processOperator(operatorId) {
   statement += ` ${operatorId} `;
   document.querySelector('#statement').textContent = statement;
-
   if (operatorTest === false) {
     operatorTest = true;
     operator = operatorId; // used for processEquals funcntion
     return;
   }
-
   const result = operate(operator, parseInt(numberA.join('')), parseInt(numberB.join('')));
   document.querySelector('#result').textContent = result;
   operator = operatorId; // sets operator for next operation
@@ -186,6 +178,8 @@ function processOperator(operatorId) {
   operatorTest = true;
   return;
 }
+
+
 
 // const key = document.querySelectorAll('.key');
 // key.forEach((button) => {
