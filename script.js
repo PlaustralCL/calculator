@@ -1,3 +1,15 @@
+/** Initialize global variables */
+let numberA = [];
+let numberB = [];
+let numberAns = [];
+let statement = '';
+let operator = '';
+let numberList = /[0-9]/;
+let operatorTest = false;
+
+
+/** Functions */
+
 function add(a, b) {
   return a + b;
 }
@@ -19,16 +31,16 @@ function divide(a, b) {
 
 function operate(operator, firstNumber, secondNumber) {
   switch(operator) {
-    case '+':
+    case 'add':
       return add(firstNumber, secondNumber);
       break;
-    case '-':
+    case 'subtract':
       return substract(firstNumber, secondNumber);
       break;
-    case '*':
+    case 'multiply':
       return multiply(firstNumber, secondNumber);
       break;
-    case '/':
+    case 'divide':
       return divide(firstNumber, secondNumber);
       break;
     default:
@@ -37,10 +49,44 @@ function operate(operator, firstNumber, secondNumber) {
   }
 }
 
-for (let i = 0; i <= 10; i++) {
-  const firstNumber = parseInt(prompt('First number?'));
-  const operator = prompt('Operator?');
-  const secondNumber = parseInt(prompt('Second number?'));
-  const result = operate(operator,firstNumber, secondNumber);
-  console.log(`${firstNumber} ${operator} ${secondNumber} = ${result}`);
+function handleClick(event){
+  console.log({equalsTest: operatorTest});
+  if (event.target.id.search(/[0-9]/) !== -1) {
+    if (operatorTest === false) {
+      numberA.push(parseInt(event.target.id));
+      console.log({numberA});
+      statement += event.target.id;
+      document.querySelector('#statement').textContent = statement;
+      return;
+    } else {
+      numberB.push(parseInt(event.target.id));
+      console.log({numberB});
+      statement += event.target.id;
+      document.querySelector('#statement').textContent = statement;
+      return;
+    }
+  } else if (event.target.id ==='equals') {
+    console.log(typeof(parseInt(numberA.join(''))));
+    const result = operate(operator,
+      parseInt(numberA.join('')), parseInt(numberB.join('')));
+    document.querySelector('#result').textContent = result;
+      operatorTest = false;
+      numberAns = result;
+      return;
+  } else {
+    operator = event.target.id;
+    statement += ` ${event.target.id} `;
+    document.querySelector('#statement').textContent = statement;
+    operatorTest = true;
+    return;
+  }
+  
+  
 }
+
+document.querySelector('.buttons').addEventListener('click', handleClick);
+
+// const key = document.querySelectorAll('.key');
+// key.forEach((button) => {
+//   button.addEventListener('click', handleClick)
+// });

@@ -57,11 +57,12 @@
   justify-content: center;
 }
 
-.key {
+.btn {
   box-sizing: border-box;
   height: 75px;
   width: 94px;
   margin: 2px;
   font-size: 16px;
-
+  font-weight: bold;
 }
+
