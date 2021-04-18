@@ -33,17 +33,18 @@ function divide(a, b) {
 }
 
 function operate(operator, firstNumber, secondNumber) {
+  console.log(operator);
   switch(operator) {
-    case 'add':
+    case '+':
       return add(firstNumber, secondNumber);
       break;
-    case 'subtract':
+    case '-':
       return substract(firstNumber, secondNumber);
       break;
-    case 'multiply':
+    case '*':
       return multiply(firstNumber, secondNumber);
       break;
-    case 'divide':
+    case '/':
       return divide(firstNumber, secondNumber);
       break;
     default:
