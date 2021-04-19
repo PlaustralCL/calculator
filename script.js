@@ -113,7 +113,7 @@ function clearEntry() {
 }
 
 function processEquals() {
-  if (operator.length === 0) {
+  if (storedNumber.length === 0 || workingNumber.length === 0 ||operator.length === 0) {
     return;
   }
   const result = operate(operator, parseFloat(storedNumber), parseFloat(workingNumber));
