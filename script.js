@@ -7,7 +7,7 @@ let numberStored = '';
 let statement = '';
 let operator = '';
 let numberList = /[0-9]/;
-let operatorTest = false;
+
 equalsTest = false;
 
 /** Event Listeners */
@@ -116,7 +116,7 @@ function clearAll() {
   document.querySelector('#result').textContent = '';
   numberStored = '';
   numberWorking = '';
-  operatorTest = false;
+  
   equalsTest = false;
   return;
 }
@@ -142,17 +142,18 @@ function processEquals() {
 
   const result = operate(operator, parseFloat(numberStored), parseFloat(numberWorking));
   document.querySelector('#result').textContent = result;
-  equalsTest = true;
-  operatorTest = false;
   numberStored = result.toString();
+  //reset global variables
+  equalsTest = true;
+  
   console.log({numberStored});
   numberWorking = '';
+  operator = '';
   return;
 }
 
 function processNumber(numberId) {
-  console.log('processNumber');
-  console.log({numberStored});
+  
   numberWorking += numberId;
   statement += numberId;
   document.querySelector('#statement').textContent = statement;
@@ -160,30 +161,43 @@ function processNumber(numberId) {
 }
 
 function processOperator(operatorId) {
+  console.log(`operator length = ${operator.length}`);
+  // if (operator.length !== 0) { 
+  //   //inadvertent impact of preventing stringing together operations
+  //   return; // returns if an operator has already been pressed
+  // }
+  
   statement += ` ${operatorId} `;
   document.querySelector('#statement').textContent = statement;
   
-  //Checks for first press of an operator
-  if (operatorTest === false && numberStored.length === 0) {
-    numberStored = numberWorking; //problem
-    numberWorking = ''; //problem
-    operatorTest = true;
+  //Checks for first press of an operator and then moves the working number
+  // to the stored number. This is only applicable for the first calculation
+  // or after clear all.
+  if (operator.length === 0 && numberStored.length === 0) {
+    console.log('this here');
+    numberStored = numberWorking; 
+    numberWorking = '';
+    
     operator = operatorId; // used for processEquals funcntion
     return;
   }
 
   //For first operator after the equals sign has been pressed.
-  if (operatorTest === false) {
+  if (operator.length === 0) {
     operator = operatorId;
-    operatorTest = true;
+   
     return;
   }
-  const result = operate(operator, parseInt(numberStored), parseInt(numberWorking));
-  document.querySelector('#result').textContent = result;
-  operator = operatorId; // sets operator for next operation
-  numberStored = result.toString();
-  console.log(typeof numberStored);
-  numberWorking = '';
-  operatorTest = true;
+  if (numberStored.length !== 0 && numberWorking.length !== 0 && operator.length !== 0) { // all three parts are needed for a calculation
+    const result = operate(operator, parseInt(numberStored), parseInt(numberWorking)); // calculate the result
+    document.querySelector('#result').textContent = result; // update screen with result
+    numberStored = result.toString();
+    numberWorking = '';
+    operator = '';
+    return;
+  }
+  
+  
+  
   return;
 } // end of process operator
