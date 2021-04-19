@@ -1,0 +1,109 @@
+RECEIVE operatorId
+
+/** Conditon 1 
+* Initial state: 0 1 0 
+*Initial operator input - after browser refresh/load or clearAll
+* storedNumber is empty
+* working number is not empty 
+* operator is empty
+*/
+IF (storedNumber is empty AND workingNumber not empty AND operator is empty)
+  storedNumber = workingNumber
+  workingNumber = '' //reset
+  SHOW operator on statement
+  operator = operatorId
+  return
+ENDIF
+/** Conditon 2
+* Final state: 1 0 1
+*/
+___________________________________________________________
+
+/** Condition 3
+* Inital state: 1 1 1
+* Stringing together operations without equals sign
+* Ready for calculation
+* needs to be treated as an equal sign --> go to processEquals?
+* storedNumber is not empty
+* workingNumber is not empty
+* operator is not empty
+*/
+If (storedNumber is not empty AND workingNumber is not empty AND operator is not empty)
+  result = calculate(operator, storedNumber, workingNumber)
+  storedNumber = result
+  SHOW result on display
+  workingNumber = ''
+  operator = operatorId
+  SHOW operator on statement
+  return
+
+ENDIF
+/** Condition 2
+* Final state: 1 0 1
+*/
+__________________________________________________________________
+
+/** Conditon 4
+* Initial state: 1 0 0
+* After equals sign, workingNumber and operator have been reset
+* storedNumber is not empty (equals result of previous calculation)
+* workingNumber is empty
+* operator is empty
+*/
+IF (storedNumber is not empty AND workingNumber is empty AND operator is empty)
+  SHOW operator on screen
+  operator = operatorId
+  return
+ENDIF
+/** Condition 2
+* Final state: 1 0 1 
+*/
+________________________
+
+/** Conditon 6
+* Initial state: 1 1 0
+* *start new calc with number after equals sign
+* storedNumber is not empty (equals result of previous calculation)
+* workingNumber is not empty
+* operator is empty
+*/
+IF (storedNumber is not empty AND workingNumber is not empty AND operator is empty)
+  storedNumber = workingNumber
+  workingNumber = '' //reset
+  SHOW operator on statement
+  operator = operatorId
+  return
+ENDIF
+/** Condition 2
+* Final state: 1 0 1 
+*/
+  
+
+
+
+
+
+
+_____________________________________________
+
+/** Stop repeated operator entry
+* Conditon 2
+* Initial state: 1 0 1
+* waiting for another number. An additional operator at this point is an error
+* storedNumber is not empty
+* workingNumber is empty
+* operator is not empty
+*/
+IF (storedNumber is not empty AND workingNumber is empty AND operator is empty)
+  return // no action taken
+ENDIF
+
+
+/**
+* Condition 0
+* Initial state: 0 0 0
+*/
+
+IF (storedNumber is empty AND workingNumber is empty)
+  return // no action since no numbers have been provided
+ENDIF
