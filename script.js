@@ -1,14 +1,8 @@
 /** Initialize global variables */
-let numberA = '';
-let numberB = '';
 let workingNumber = '';
 let storedNumber = '';
-
 let statement = '';
 let operator = '';
-let numberList = /[0-9]/;
-
-equalsTest = false;
 
 /** Event Listeners */
 document.querySelector('.buttons').addEventListener('click', handleClick);
@@ -59,15 +53,7 @@ function operate(operator, firstNumber, secondNumber) {
 }
 
 function handleClick(event){
-  console.log('handleClick');
-  console.log({numberStored: storedNumber});
-  if (equalsTest === true && event.target.id.search(/[0-9]/) !== -1) {
-    // !== -1 means that a number was found.
-    clearAll();
-  }
-  equalsTest = false;
-  
-  if (event.target.id.search(/[0-9]/) !== -1) {
+  if (event.target.id.search(/[0-9]/) !== -1) { // deal with numbers
     processNumber(event.target.id);
     return;
   }
@@ -116,8 +102,6 @@ function clearAll() {
   document.querySelector('#result').textContent = '';
   storedNumber = '';
   workingNumber = '';
-  
-  equalsTest = false;
   return;
 }
 
@@ -138,7 +122,6 @@ function processEquals() {
   operator = '';
   workingNumber = '';
   return;  
-  // equalsTest = true;
 }
 
 function processNumber(numberId) {
@@ -155,7 +138,17 @@ function processNumber(numberId) {
 }
 
 function processOperator(operatorId) {
-  console.log(storedNumber, workingNumber, operator);
+  /** See processOperator-tables.md in the planning folder for more detail
+   * on the conditions.
+   */
+
+  /** Conditon 1
+   * Initial state: 0 1 0 
+   * Initial operator input - after browser refresh/load or clearAll
+   * storedNumber is empty
+   * working number is not empty 
+   * operator is empty
+   */
   if (storedNumber.length === 0 && workingNumber.length !== 0 && operator.length === 0) {
     storedNumber = workingNumber;
     workingNumber = '';
@@ -165,17 +158,30 @@ function processOperator(operatorId) {
     return;
   }
 
+  /** Condition 3
+   * Inital state: 1 1 1
+   * Stringing together operations without equals sign
+   * Ready for calculation
+   * needs to be treated as an equal sign --> use processEquals()
+   * storedNumber is not empty
+   * workingNumber is not empty
+   * operator is not empty
+   */
   if (storedNumber.length !== 0 && workingNumber.length !== 0 && operator.length !== 0) {
-    const result = operate(operator, parseFloat(storedNumber), parseFloat(workingNumber));
-    storedNumber = result.toString();
-    document.querySelector('#result').textContent = result;
-    workingNumber = ''
+    processEquals();
     operator = operatorId;
     statement += ` ${operatorId} `;
     document.querySelector('#statement').textContent = statement;
     return;  
   }
   
+  /** Conditon 4
+  * Initial state: 1 0 0
+  * After equals sign, workingNumber and operator have been reset
+  * storedNumber is not empty (equals result of previous calculation)
+  * workingNumber is empty
+  * operator is empty
+  */
   if (storedNumber.length !== 0 && workingNumber.length === 0 && operator.length === 0) {
     statement += ` ${operatorId} `;
     document.querySelector('#statement').textContent = statement;
@@ -183,6 +189,13 @@ function processOperator(operatorId) {
     return;    
   }
   
+  /** Conditon 6
+* Initial state: 1 1 0
+* *start new calc with number after equals sign
+* storedNumber is not empty (equals result of previous calculation)
+* workingNumber is not empty
+* operator is empty
+*/
   if (storedNumber.length !== 0 && workingNumber.length !== 0 && operator.length === 0) {
     storedNumber = workingNumber;
     workingNumber = '';
