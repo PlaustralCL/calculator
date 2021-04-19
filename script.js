@@ -1,8 +1,8 @@
 /** Initialize global variables */
 let numberA = '';
 let numberB = '';
-let numberWorking = '';
-let numberStored = '';
+let workingNumber = '';
+let storedNumber = '';
 
 let statement = '';
 let operator = '';
@@ -38,7 +38,7 @@ function divide(a, b) {
 
 function operate(operator, firstNumber, secondNumber) {
   console.log('operate()');
-  console.log({numberStored});
+  console.log({numberStored: storedNumber});
   console.log(operator);
   switch(operator) {
     case '+':
@@ -60,7 +60,7 @@ function operate(operator, firstNumber, secondNumber) {
 
 function handleClick(event){
   console.log('handleClick');
-  console.log({numberStored});
+  console.log({numberStored: storedNumber});
   if (equalsTest === true && event.target.id.search(/[0-9]/) !== -1) {
     // !== -1 means that a number was found.
     clearAll();
@@ -103,7 +103,7 @@ function handleClick(event){
 }
 
 function backspaceEntry() {
-  numberWorking = numberWorking.slice(0, numberWorking.length - 1);
+  workingNumber = workingNumber.slice(0, workingNumber.length - 1);
   statement = statement.slice(0, statement.length - 1);
   document.querySelector('#statement').textContent = statement;
   return;
@@ -114,90 +114,81 @@ function clearAll() {
   statement = '';
   document.querySelector('#statement').textContent = '';
   document.querySelector('#result').textContent = '';
-  numberStored = '';
-  numberWorking = '';
+  storedNumber = '';
+  workingNumber = '';
   
   equalsTest = false;
   return;
 }
 
 function clearEntry() {
-  numberWorking = '';
+  workingNumber = '';
   statement = statement.slice(0, statement.lastIndexOf(' ')) + ' ';
   document.querySelector('#statement').textContent = statement;
   return;
 }
 
 function processEquals() {
-  console.log('processEquals');
-  console.log({numberStored});
-  if(numberStored.length === 0 || numberWorking.length === 0) {
-    console.log('processEquals - unnecessary equal usage');
-    console.log({numberStored});
-    
-    console.log({numberWorking});
-    console.log('equals 0');
+  if (operator.length === 0) {
     return;
   }
-
-  const result = operate(operator, parseFloat(numberStored), parseFloat(numberWorking));
+  const result = operate(operator, parseFloat(storedNumber), parseFloat(workingNumber));
   document.querySelector('#result').textContent = result;
-  numberStored = result.toString();
-  //reset global variables
-  equalsTest = true;
-  
-  console.log({numberStored});
-  numberWorking = '';
+  storedNumber = result.toString();
   operator = '';
-  return;
+  workingNumber = '';
+  return;  
+  // equalsTest = true;
 }
 
 function processNumber(numberId) {
-  
-  numberWorking += numberId;
+  //Reset the displays if a new calculation is started after an equals sign
+  if (storedNumber.length !== 0 && workingNumber.length === 0 && operator.length === 0) {
+    statement = '';
+    document.querySelector('#statement').textContent = statement;
+    document.querySelector('#result').textContent = '';
+  }
+  workingNumber += numberId;
   statement += numberId;
   document.querySelector('#statement').textContent = statement;
   return;
 }
 
 function processOperator(operatorId) {
-  console.log(`operator length = ${operator.length}`);
-  // if (operator.length !== 0) { 
-  //   //inadvertent impact of preventing stringing together operations
-  //   return; // returns if an operator has already been pressed
-  // }
-  
-  statement += ` ${operatorId} `;
-  document.querySelector('#statement').textContent = statement;
-  
-  //Checks for first press of an operator and then moves the working number
-  // to the stored number. This is only applicable for the first calculation
-  // or after clear all.
-  if (operator.length === 0 && numberStored.length === 0) {
-    console.log('this here');
-    numberStored = numberWorking; 
-    numberWorking = '';
-    
-    operator = operatorId; // used for processEquals funcntion
+  console.log(storedNumber, workingNumber, operator);
+  if (storedNumber.length === 0 && workingNumber.length !== 0 && operator.length === 0) {
+    storedNumber = workingNumber;
+    workingNumber = '';
+    statement += ` ${operatorId} `;
+    document.querySelector('#statement').textContent = statement;
+    operator = operatorId;
     return;
   }
 
-  //For first operator after the equals sign has been pressed.
-  if (operator.length === 0) {
+  if (storedNumber.length !== 0 && workingNumber.length !== 0 && operator.length !== 0) {
+    const result = operate(operator, parseFloat(storedNumber), parseFloat(workingNumber));
+    storedNumber = result.toString();
+    document.querySelector('#result').textContent = result;
+    workingNumber = ''
     operator = operatorId;
-   
-    return;
-  }
-  if (numberStored.length !== 0 && numberWorking.length !== 0 && operator.length !== 0) { // all three parts are needed for a calculation
-    const result = operate(operator, parseInt(numberStored), parseInt(numberWorking)); // calculate the result
-    document.querySelector('#result').textContent = result; // update screen with result
-    numberStored = result.toString();
-    numberWorking = '';
-    operator = '';
-    return;
+    statement += ` ${operatorId} `;
+    document.querySelector('#statement').textContent = statement;
+    return;  
   }
   
+  if (storedNumber.length !== 0 && workingNumber.length === 0 && operator.length === 0) {
+    statement += ` ${operatorId} `;
+    document.querySelector('#statement').textContent = statement;
+    operator = operatorId;
+    return;    
+  }
   
-  
-  return;
+  if (storedNumber.length !== 0 && workingNumber.length !== 0 && operator.length === 0) {
+    storedNumber = workingNumber;
+    workingNumber = '';
+    statement += ` ${operatorId} `;
+    document.querySelector('#statement').textContent = statement;
+    operator = operatorId;
+    return;      
+  }      
 } // end of process operator
