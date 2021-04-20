@@ -30,6 +30,10 @@ function divide(a, b) {
   return a / b;
 }
 
+function exponent(a, b) {
+  return a ** b;
+}
+
 function operate(operator, firstNumber, secondNumber) {
   console.log('operate()');
   console.log({numberStored: storedNumber});
@@ -46,6 +50,9 @@ function operate(operator, firstNumber, secondNumber) {
       break;
     case '/':
       return divide(firstNumber, secondNumber);
+      break;
+    case '^':
+      return exponent(firstNumber, secondNumber);
       break;
     default:
       return 'unknown';
