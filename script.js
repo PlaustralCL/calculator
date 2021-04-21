@@ -60,6 +60,7 @@ function operate(operator, firstNumber, secondNumber) {
 }
 
 function handleClick(event){
+  console.log('handleClick');
   if (event.target.id.search(/[0-9]/) !== -1) { // deal with numbers
     processNumber(event.target.id);
     return;
@@ -109,6 +110,7 @@ function clearAll() {
   document.querySelector('#result').textContent = '';
   storedNumber = '';
   workingNumber = '';
+  operator = '';
   return;
 }
 
@@ -120,9 +122,16 @@ function clearEntry() {
 }
 
 function processEquals() {
+  // Need to have two numbers and an operator to perform a calculation
   if (storedNumber.length === 0 || workingNumber.length === 0 ||operator.length === 0) {
     return;
   }
+  /**After 3rd operator is pressed, resets statement to show the immediate
+   * calculation that gave the result
+   */
+  if (statement.match(/[+-/*^]/g).length >= 2) {
+    statement = `(${document.querySelector('#result').textContent} ${operator} ${workingNumber})`;
+  } 
   const result = operate(operator, parseFloat(storedNumber), parseFloat(workingNumber));
   document.querySelector('#result').textContent = result;
   storedNumber = result.toString();
@@ -175,7 +184,7 @@ function processOperator(operatorId) {
    * operator is not empty
    */
   if (storedNumber.length !== 0 && workingNumber.length !== 0 && operator.length !== 0) {
-    processEquals();
+    processEquals(); // storedNumber now equals result
     operator = operatorId;
     statement += ` ${operatorId} `;
     document.querySelector('#statement').textContent = statement;
