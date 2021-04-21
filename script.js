@@ -90,6 +90,10 @@ function handleClick(event){
       processNumber('.');
       return;
       break;
+    case 'signs':
+      changeSign();
+      return;
+      break;
     default:
       processOperator(event.target.id);
       return;
@@ -99,6 +103,30 @@ function handleClick(event){
 function backspaceEntry() {
   workingNumber = workingNumber.slice(0, workingNumber.length - 1);
   statement = statement.slice(0, statement.length - 1);
+  document.querySelector('#statement').textContent = statement;
+  return;
+}
+
+function changeSign() {
+  if (workingNumber.length === 0) {
+    console.log('no sign change - return');
+    return;
+  }
+  if (workingNumber.slice(0,1) === '-') {
+    workingNumber = workingNumber.slice(1); // removes negative sign
+  } else {
+      workingNumber = `-${workingNumber}`; // adds negative sign
+  }
+
+  if (operator.length === 0) {
+    statement = workingNumber;
+  } else {
+      /** the line below does not work properly for the first entry, if more than 1 digit */
+      statement = statement.slice(0, statement.lastIndexOf(' ')) + ' '; //removes the old number
+      statement += workingNumber; // replace with the new number, with switched sign
+    }
+
+  
   document.querySelector('#statement').textContent = statement;
   return;
 }
@@ -126,12 +154,23 @@ function processEquals() {
   if (storedNumber.length === 0 || workingNumber.length === 0 ||operator.length === 0) {
     return;
   }
+
+  let  amountNegativeSigns = 0;
+  /** Look for '-' that are immediately followed by a number. This would indicate
+   * a negative number, not a substraction sign. If none are found then the
+   * match would return null. Not null means a negative sign is present.
+   */
+  if (statement.match(/-(?=[0-9])/g) !== null) {
+    amountNegativeSigns = statement.match(/-(?=[0-9])/g).length;
+  }
+  const amountOperators = statement.match(/[+-/*^]/g).length; //Number of operators present
   /**After 3rd operator is pressed, resets statement to show the immediate
    * calculation that gave the result
    */
-  if (statement.match(/[+-/*^]/g).length >= 2) {
+  if (amountOperators - amountNegativeSigns >= 2) {
     statement = `(${document.querySelector('#result').textContent} ${operator} ${workingNumber})`;
   } 
+
   const result = operate(operator, parseFloat(storedNumber), parseFloat(workingNumber));
   document.querySelector('#result').textContent = result;
   storedNumber = result.toString();
