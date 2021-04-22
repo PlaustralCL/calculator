@@ -70,12 +70,16 @@ function handleClick(event){
     case 'buttons':
       return;
       break;
+    case 'ce':
+      clearEntry();
+      return;
+      break;
     case 'clear':
       clearAll();
       return;
       break;
-    case 'ce':
-      clearEntry();
+    case 'decimal':
+      processNumber('.');
       return;
       break;
     case 'delete':
@@ -86,8 +90,8 @@ function handleClick(event){
       processEquals();
       return;
       break;
-    case 'decimal':
-      processNumber('.');
+    case 'invert':
+      invertNumber();
       return;
       break;
     case 'signs':
@@ -149,6 +153,14 @@ function clearEntry() {
   return;
 }
 
+function invertNumber() {
+  workingNumber = 1 / parseFloat(workingNumber);
+  workingNumber = workingNumber.toString();
+  // document.querySelector('#result').textContent = workingNumber;
+  statement = statement.slice(0, statement.lastIndexOf(' ')) + ' ' + workingNumber;
+  document.querySelector('#statement').textContent = statement;
+}
+
 function processEquals() {
   // Need to have two numbers and an operator to perform a calculation
   if (storedNumber.length === 0 || workingNumber.length === 0 ||operator.length === 0) {
@@ -163,7 +175,7 @@ function processEquals() {
   if (statement.match(/-(?=[0-9])/g) !== null) {
     amountNegativeSigns = statement.match(/-(?=[0-9])/g).length;
   }
-  const amountOperators = statement.match(/[+-/*^]/g).length; //Number of operators present
+  const amountOperators = statement.match(/[+\-/*^]/g).length; //Number of operators present
   /**After 3rd operator is pressed, resets statement to show the immediate
    * calculation that gave the result
    */
