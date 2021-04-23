@@ -205,16 +205,29 @@ function processEquals() {
   }
 
   let  amountNegativeSigns = 0;
-  /** Look for '-' that are immediately followed by a number. This would indicate
+
+  /** Look for `-` that are immediately followed by a number. This would indicate
    * a negative number, not a substraction sign. If none are found then the
    * match would return null. Not null means a negative sign is present.
    */
   if (statement.match(/-(?=[0-9])/g) !== null) {
     amountNegativeSigns = statement.match(/-(?=[0-9])/g).length;
   }
+
+  /**Look for `-` that are immediately followed by decimals, indicating a
+   * negative decimal number.
+  */
+ if (statement.match(/-(?=\.)/g) !== null) {
+  amountNegativeSigns += statement.match(/-(?=\.)/g).length;
+ }
+ 
   const amountOperators = statement.match(/[+\-/*^]/g).length; //Number of operators present
+  
   /**After 3rd operator is pressed, resets statement to show the immediate
-   * calculation that gave the result
+   * calculation that gave the result, adding parentheses in the statement.
+   * This limits the size of the statement section to a reasonable amount
+   * while still showing the immediate calculation that caused the displayed 
+   * answer.
    */
   if (amountOperators - amountNegativeSigns >= 2) {
     statement = `(${document.querySelector('#result').textContent} ${operator} ${workingNumber})`;
