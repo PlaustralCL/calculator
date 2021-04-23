@@ -114,13 +114,18 @@ function backspaceEntry() {
 }
 
 function changeSign() {
-  if (workingNumber.length === 0) {
-    console.log('no sign change - return');
-    return;
-  }
-  if (workingNumber.slice(0,1) === '-') {
+  if (workingNumber === '' && document.querySelector('#result').textContent !== '') {
+    workingNumber = document.querySelector('#result').textContent;
+    statement = '';
+    resultDisplay = '';
+    updateDisplay();
+  } else if (workingNumber.length === 0) { // nothing to change
+       console.log('no sign change - return');
+      return;
+    }
+  if (workingNumber.slice(0,1) === '-') { // Negative number - already has a negative sign
     workingNumber = workingNumber.slice(1); // removes negative sign
-  } else {
+  } else { // positive number
       workingNumber = `-${workingNumber}`; // adds negative sign
   }
 
@@ -155,23 +160,36 @@ function clearEntry() {
 }
 
 function invertNumber() {
-  if (parseInt(workingNumber) === 0) {
-    return;
-  }
-  /**Allow the result to be inverted and used in the next calculation */
-  if (workingNumber === '' && document.querySelector('#result').textContent !== '') {
+  /**Allow the result (workingNumber) to be inverted and used in the next calculation
+  * but not if it is a 0 or empty.
+  */
+  if (workingNumber === '' &&
+      document.querySelector('#result').textContent !== '' &&
+      document.querySelector('#result').textContent !== '0') {
     workingNumber = document.querySelector('#result').textContent;
     statement = '';
     resultDisplay = '';
     updateDisplay();
-    
   }
+
+  //Don't invert a non number or 0
+  if (workingNumber === '' || parseFloat(workingNumber) === 0 ) {
+    console.log('invert return');
+    return;
+  }
+
+  console.log('test');
   workingNumber = 1 / parseFloat(workingNumber);
   workingNumber = workingNumber.toString();
-  statement = statement.slice(0, statement.lastIndexOf(' ')) + ' ' + workingNumber;
+
+  /** different treatment required if spaces are present */
+  if (statement.search(/\s/) === -1) { // No spaces present = true
+    statement = workingNumber;
+  } else {
+      statement = statement.slice(0, statement.lastIndexOf(' ')) + ' ' + workingNumber;
+  }
+
   updateDisplay(statement, resultDisplay);
-  
-  
 }
 
 function processEquals() {
