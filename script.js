@@ -69,40 +69,36 @@ function handleClick(event){
   
   switch (event.target.id) {
     case 'buttons':
-      return;
       break;
     case 'ce':
       clearEntry();
-      return;
       break;
     case 'clear':
       clearAll();
-      return;
       break;
     case 'decimal':
       processNumber('.');
-      return;
       break;
     case 'delete':
       backspaceEntry();
-      return;
       break;
     case 'equals':
       processEquals();
-      return;
       break;
     case 'invert':
       invertNumber();
-      return;
       break;
     case 'signs':
       changeSign();
-      return;
       break;
+    case 'squared':
+      squareOrRootNumber(2);
+      break
     default:
       processOperator(event.target.id);
-      return;
   }
+  
+  return;
 }
 
 function backspaceEntry() {
@@ -325,6 +321,39 @@ function processOperator(operatorId) {
     return;      
   }      
 } // end of process operator
+
+function squareOrRootNumber(exponent) {
+    /**Allow the result (workingNumber) to be squared and used in the next calculation
+  * but not if it is empty.
+  */
+     if (workingNumber === '' &&
+     document.querySelector('#result').textContent !== '') {
+   workingNumber = document.querySelector('#result').textContent;
+   statement = '';
+   resultDisplay = '';
+   updateDisplay();
+ }
+
+ //Don't square a non number
+ if (workingNumber === '') {
+   console.log('invert return');
+   return;
+ }
+
+ console.log('test');
+ workingNumber = parseFloat(workingNumber) ** exponent;
+ workingNumber = workingNumber.toString();
+
+ /** different treatment required if spaces are present */
+ if (statement.search(/\s/) === -1) { // No spaces present = true
+   statement = workingNumber;
+ } else {
+     statement = statement.slice(0, statement.lastIndexOf(' ')) + ' ' + workingNumber;
+ }
+
+ updateDisplay(statement, resultDisplay);
+}
+
 
 function updateDisplay(statement, resultDisplay) {
   document.querySelector('#statement').textContent = statement;
