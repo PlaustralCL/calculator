@@ -1,7 +1,8 @@
 /** Initialize global variables */
 let workingNumber = '';
 let storedNumber = '';
-let statement = '';
+let statement = ''; //string tracking display of problem statement
+let resultDisplay = '' //string tracking display of the result
 let operator = '';
 
 /** Event Listeners */
@@ -107,7 +108,8 @@ function handleClick(event){
 function backspaceEntry() {
   workingNumber = workingNumber.slice(0, workingNumber.length - 1);
   statement = statement.slice(0, statement.length - 1);
-  document.querySelector('#statement').textContent = statement;
+  updateDisplay(statement, resultDisplay);
+  
   return;
 }
 
@@ -129,17 +131,15 @@ function changeSign() {
       statement = statement.slice(0, statement.lastIndexOf(' ')) + ' '; //removes the old number
       statement += workingNumber; // replace with the new number, with switched sign
     }
-
-  
-  document.querySelector('#statement').textContent = statement;
+  updateDisplay(statement, resultDisplay);
   return;
 }
 
 function clearAll() {
   console.log('clearAll');
   statement = '';
-  document.querySelector('#statement').textContent = '';
-  document.querySelector('#result').textContent = '';
+  resultDisplay = '';
+  updateDisplay(statement, resultDisplay);
   storedNumber = '';
   workingNumber = '';
   operator = '';
@@ -149,19 +149,29 @@ function clearAll() {
 function clearEntry() {
   workingNumber = '';
   statement = statement.slice(0, statement.lastIndexOf(' ')) + ' ';
-  document.querySelector('#statement').textContent = statement;
+ 
+  updateDisplay(statement, resultDisplay);
   return;
 }
 
 function invertNumber() {
-  if (workingNumber === '' || parseInt(workingNumber) === 0) {
+  if (parseInt(workingNumber) === 0) {
     return;
+  }
+  /**Allow the result to be inverted and used in the next calculation */
+  if (workingNumber === '' && document.querySelector('#result').textContent !== '') {
+    workingNumber = document.querySelector('#result').textContent;
+    statement = '';
+    resultDisplay = '';
+    updateDisplay();
+    
   }
   workingNumber = 1 / parseFloat(workingNumber);
   workingNumber = workingNumber.toString();
-  // document.querySelector('#result').textContent = workingNumber;
   statement = statement.slice(0, statement.lastIndexOf(' ')) + ' ' + workingNumber;
-  document.querySelector('#statement').textContent = statement;
+  updateDisplay(statement, resultDisplay);
+  
+  
 }
 
 function processEquals() {
@@ -187,7 +197,8 @@ function processEquals() {
   } 
 
   const result = operate(operator, parseFloat(storedNumber), parseFloat(workingNumber));
-  document.querySelector('#result').textContent = result;
+  resultDisplay = result;
+  updateDisplay(statement, resultDisplay);
   storedNumber = result.toString();
   operator = '';
   workingNumber = '';
@@ -198,12 +209,12 @@ function processNumber(numberId) {
   //Reset the displays if a new calculation is started after an equals sign
   if (storedNumber.length !== 0 && workingNumber.length === 0 && operator.length === 0) {
     statement = '';
-    document.querySelector('#statement').textContent = statement;
-    document.querySelector('#result').textContent = '';
+    resultDisplay = '';
+    updateDisplay(statement, resultDisplay);
   }
   workingNumber += numberId;
   statement += numberId;
-  document.querySelector('#statement').textContent = statement;
+  updateDisplay(statement, resultDisplay);
   return;
 }
 
@@ -223,7 +234,8 @@ function processOperator(operatorId) {
     storedNumber = workingNumber;
     workingNumber = '';
     statement += ` ${operatorId} `;
-    document.querySelector('#statement').textContent = statement;
+    updateDisplay(statement, resultDisplay);
+    
     operator = operatorId;
     return;
   }
@@ -241,7 +253,8 @@ function processOperator(operatorId) {
     processEquals(); // storedNumber now equals result
     operator = operatorId;
     statement += ` ${operatorId} `;
-    document.querySelector('#statement').textContent = statement;
+    updateDisplay(statement, resultDisplay);
+    
     return;  
   }
   
@@ -254,7 +267,7 @@ function processOperator(operatorId) {
   */
   if (storedNumber.length !== 0 && workingNumber.length === 0 && operator.length === 0) {
     statement += ` ${operatorId} `;
-    document.querySelector('#statement').textContent = statement;
+    updateDisplay(statement, resultDisplay);
     operator = operatorId;
     return;    
   }
@@ -270,8 +283,13 @@ function processOperator(operatorId) {
     storedNumber = workingNumber;
     workingNumber = '';
     statement += ` ${operatorId} `;
-    document.querySelector('#statement').textContent = statement;
+    updateDisplay(statement, resultDisplay);
     operator = operatorId;
     return;      
   }      
 } // end of process operator
+
+function updateDisplay(statement, resultDisplay) {
+  document.querySelector('#statement').textContent = statement;
+  document.querySelector('#result').textContent = resultDisplay;
+}
