@@ -153,8 +153,14 @@ function clearAll() {
 
 function clearEntry() {
   workingNumber = '';
-  statement = statement.slice(0, statement.lastIndexOf(' ')) + ' ';
- 
+  /** different treatement needed if the statement display has spaces or not */
+  if (statement.search(/\s/) === -1) { //no spaces === true
+    statement = '';
+  } else {
+    // Looks for the last space charter and slices from there to the end
+    statement = statement.slice(0, statement.lastIndexOf(' ')) + ' ';
+  }
+
   updateDisplay(statement, resultDisplay);
   return;
 }
