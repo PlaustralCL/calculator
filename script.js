@@ -154,6 +154,9 @@ function clearEntry() {
 }
 
 function invertNumber() {
+  if (workingNumber === '' || parseInt(workingNumber) === 0) {
+    return;
+  }
   workingNumber = 1 / parseFloat(workingNumber);
   workingNumber = workingNumber.toString();
   // document.querySelector('#result').textContent = workingNumber;
