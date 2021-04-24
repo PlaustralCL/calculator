@@ -201,7 +201,6 @@ function invertNumber() {
 
   workingNumber = workingNumber.toString();
 
-
   /** different treatment required if spaces are present */
   if (statement.search(/\s/) === -1) { // No spaces present = true
     statement = limitDecimalPlaces(workingNumber, 3);
@@ -217,6 +216,11 @@ function invertNumber() {
 function launchModal() {
   console.log('launchModal');
   document.querySelector('#modal').style.display = 'flex';
+}
+
+function launchToast() {
+  document.querySelector('#excessDigits').classList.add('toast--show');
+  setTimeout(() => document.querySelector('#excessDigits').classList.remove('toast--show'), 3000);
 }
 
 /**
@@ -280,7 +284,6 @@ function processEqualsButton() {
 
   const result = findCalculation(operator, parseFloat(storedNumber), parseFloat(workingNumber));
  
-
   if (result === 'ERROR') {
     launchModal();
     storedNumber = '';
@@ -290,8 +293,6 @@ function processEqualsButton() {
     resultDisplay = limitDecimalPlaces(result.toString(), 10);
     storedNumber = result.toString();
   }
-
-
   
   updateDisplay(statement, resultDisplay);
   
@@ -313,10 +314,11 @@ function processNumberButton(numberId) {
   }
 
   /**Limit the size of the working number to 10 digits*/
-  if(workingNumber.length > 0 && workingNumber.match(/[0-9]/g).length >=3) {
-    console.log('too long');
+  if(workingNumber.length > 0 && workingNumber.match(/[0-9]/g).length >= 10) {
+    launchToast();
     return;
   }
+
   workingNumber += numberId;
   statement += numberId;
   updateDisplay(statement, resultDisplay);
