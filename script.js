@@ -37,7 +37,7 @@ function exponent(a, b) {
   return a ** b;
 }
 
-function operate(operator, firstNumber, secondNumber) {
+function findCalculation(operator, firstNumber, secondNumber) {
   console.log('operate()');
   console.log({numberStored: storedNumber});
   console.log(operator);
@@ -65,7 +65,7 @@ function operate(operator, firstNumber, secondNumber) {
 function handleClick(event){
   console.log('handleClick');
   if (event.target.id.search(/[0-9]/) !== -1) { // deal with numbers
-    processNumber(event.target.id);
+    processNumberButton(event.target.id);
     return;
   }
   
@@ -79,13 +79,13 @@ function handleClick(event){
       clearAll();
       break;
     case 'decimal':
-      processNumber('.');
+      processNumberButton('.');
       break;
     case 'delete':
-      backspaceEntry();
+      backspaceButton();
       break;
     case 'equals':
-      processEquals();
+      processEqualsButton();
       break;
     case 'invert':
       invertNumber();
@@ -103,13 +103,13 @@ function handleClick(event){
       squareOrRootNumber(2);
       break
     default:
-      processOperator(event.target.id);
+      processOperatorButton(event.target.id);
   }
   
   return;
 }
 
-function backspaceEntry() {
+function backspaceButton() {
   /**Only allow backspace for working number */
   if (workingNumber === '') {
     return;
@@ -215,7 +215,7 @@ function launchModal() {
   document.querySelector('#modal').style.display = 'flex';
 }
 
-function processEquals() {
+function processEqualsButton() {
   // Need to have two numbers and an operator to perform a calculation
   if (storedNumber.length === 0 || workingNumber.length === 0 ||operator.length === 0) {
     return;
@@ -234,7 +234,7 @@ function processEquals() {
   /**Look for `-` that are immediately followed by decimals, indicating a
    * negative decimal number.
   */
- if (statement.match(/-(?=\.)/g) !== null) { // means a negative decimal is present
+ if (statement.match(/-(?=\.)/g) !== null) { // not null means a negative decimal is present
   amountNegativeSigns += statement.match(/-(?=\.)/g).length;
  }
  
@@ -250,7 +250,7 @@ function processEquals() {
     statement = `(${document.querySelector('#result').textContent} ${operator} ${workingNumber})`;
   } 
 
-  const result = operate(operator, parseFloat(storedNumber), parseFloat(workingNumber));
+  const result = findCalculation(operator, parseFloat(storedNumber), parseFloat(workingNumber));
   resultDisplay = result;
   storedNumber = result.toString();
 
@@ -268,7 +268,7 @@ function processEquals() {
   return;  
 }
 
-function processNumber(numberId) {
+function processNumberButton(numberId) {
   //prevent multiple decimals
   if (numberId === '.' && workingNumber.match(/\./g) !== null) { 
     return;
@@ -285,7 +285,7 @@ function processNumber(numberId) {
   return;
 }
 
-function processOperator(operatorId) {
+function processOperatorButton(operatorId) {
   /** See processOperator-tables.md in the planning folder for more detail
    * on the conditions.
    */
@@ -317,7 +317,7 @@ function processOperator(operatorId) {
    * operator is not empty
    */
   if (storedNumber.length !== 0 && workingNumber.length !== 0 && operator.length !== 0) {
-    processEquals(); // storedNumber now equals result
+    processEqualsButton(); // storedNumber now equals result
     operator = operatorId;
     statement += ` ${operatorId} `;
     updateDisplay(statement, resultDisplay);
