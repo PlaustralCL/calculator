@@ -91,6 +91,9 @@ function handleClick(event){
     case 'signs':
       changeSign();
       break;
+    case 'sqrt':
+      squareOrRootNumber(.5);
+      break
     case 'squared':
       squareOrRootNumber(2);
       break
@@ -326,15 +329,21 @@ function squareOrRootNumber(exponent) {
     /**Allow the result (workingNumber) to be squared and used in the next calculation
   * but not if it is empty.
   */
-     if (workingNumber === '' &&
-     document.querySelector('#result').textContent !== '') {
-   workingNumber = document.querySelector('#result').textContent;
+  const resultNumber = document.querySelector('#result').textContent;
+
+  /**Don't try to take the square root of a negative number */
+  if (exponent === .5 && (workingNumber < 0 || parseFloat(resultNumber) < 0)) {
+    return;
+  }
+
+  if (workingNumber === '' && resultNumber !== '') {
+   workingNumber = resultNumber;
    statement = '';
    resultDisplay = '';
    updateDisplay();
  }
 
- //Don't square a non number
+ //Don't square a non number. Needed when calculator first loads
  if (workingNumber === '') {
    console.log('invert return');
    return;
