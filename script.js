@@ -77,6 +77,10 @@ function handleClick(event){
       clearAll();
       break;
     case 'decimal':
+      //prevent multiple decimals
+      if (workingNumber.match(/\./g) !== null) { 
+        return;
+      }
       processNumber('.');
       break;
     case 'delete':
@@ -216,7 +220,7 @@ function processEquals() {
   /**Look for `-` that are immediately followed by decimals, indicating a
    * negative decimal number.
   */
- if (statement.match(/-(?=\.)/g) !== null) {
+ if (statement.match(/-(?=\.)/g) !== null) { // means a negative decimal is present
   amountNegativeSigns += statement.match(/-(?=\.)/g).length;
  }
  
