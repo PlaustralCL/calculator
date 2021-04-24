@@ -279,15 +279,19 @@ function processEqualsButton() {
   } 
 
   const result = findCalculation(operator, parseFloat(storedNumber), parseFloat(workingNumber));
-  resultDisplay = limitDecimalPlaces(result.toString(), 10);
-  storedNumber = result.toString();
+ 
 
   if (result === 'ERROR') {
     launchModal();
     storedNumber = '';
     statement = '';
     resultDisplay = '';
+  } else {
+    resultDisplay = limitDecimalPlaces(result.toString(), 10);
+    storedNumber = result.toString();
   }
+
+
   
   updateDisplay(statement, resultDisplay);
   
@@ -306,6 +310,12 @@ function processNumberButton(numberId) {
     statement = '';
     resultDisplay = '';
     updateDisplay(statement, resultDisplay);
+  }
+
+  /**Limit the size of the working number to 10 digits*/
+  if(workingNumber.length > 0 && workingNumber.match(/[0-9]/g).length >=3) {
+    console.log('too long');
+    return;
   }
   workingNumber += numberId;
   statement += numberId;
