@@ -105,6 +105,10 @@ function handleClick(event){
 }
 
 function backspaceEntry() {
+  /**Only allow backspace for working number */
+  if (workingNumber === '') {
+    return;
+  }
   workingNumber = workingNumber.slice(0, workingNumber.length - 1);
   statement = statement.slice(0, statement.length - 1);
   updateDisplay(statement, resultDisplay);
