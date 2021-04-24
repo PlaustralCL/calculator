@@ -10,6 +10,7 @@
 }
 .calc-body {
   box-sizing: border-box;
+  position: relative;
   height: 625px;
   width: 410px;
   display: flex;
@@ -29,7 +30,6 @@
   padding-left: 10px;
   padding-right: 10px;
   padding-top: 5px;
-  grid-area: parrot;
   background-color: #dedede;
   text-align: right;
   font-size: 24px;
@@ -39,11 +39,9 @@
   box-sizing: border-box;
   height: 100px;
   width: 400px;
-  
   padding-right: 10px;
   padding-left: 10px;
   padding-top: 20px;
-  grid-area: result;
   background-color: #dedede;
   text-align: right;
   font-size: 36px;
@@ -64,5 +62,39 @@
   margin: 2px;
   font-size: 16px;
   font-weight: bold;
+}
+
+.modal {
+  box-sizing: border-box;
+  position: absolute;
+  display: none;
+  top: 2px;
+  left: 2px;
+  height: 135px;
+  width: 400px;
+  background-color: white;
+  border-color: red;
+  border-style: solid;
+  color: red;
+  text-align: center;
+  font-size: 36px;
+}
+
+.modal__text {
+  margin-top: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+}
+
+.modal__exit {
+  position: absolute;
+  margin: 0;
+  top: -5px;
+  right: 5px;
+}
+
+.modal__exit:hover {
+  cursor: pointer;
 }
 

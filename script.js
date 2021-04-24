@@ -7,6 +7,8 @@ let operator = '';
 
 /** Event Listeners */
 document.querySelector('.buttons').addEventListener('click', handleClick);
+document.querySelector('#modal__exit').addEventListener('click', handleClick);
+
 
 /** Functions */
 
@@ -88,6 +90,9 @@ function handleClick(event){
     case 'invert':
       invertNumber();
       break;
+    case 'modal__exit':
+      closeModal();
+      break;
     case 'signs':
       changeSign();
       break;
@@ -168,6 +173,10 @@ function clearEntry() {
   return;
 }
 
+function closeModal() {
+  document.querySelector('#modal').style.display = 'none';
+}
+
 function invertNumber() {
   /**Allow the result (workingNumber) to be inverted and used in the next calculation
   * but not if it is a 0 or empty.
@@ -199,6 +208,11 @@ function invertNumber() {
   }
 
   updateDisplay(statement, resultDisplay);
+}
+
+function launchModal() {
+  console.log('launchModal');
+  document.querySelector('#modal').style.display = 'flex';
 }
 
 function processEquals() {
@@ -238,8 +252,17 @@ function processEquals() {
 
   const result = operate(operator, parseFloat(storedNumber), parseFloat(workingNumber));
   resultDisplay = result;
-  updateDisplay(statement, resultDisplay);
   storedNumber = result.toString();
+
+  if (result === 'ERROR') {
+    launchModal();
+    storedNumber = '';
+    statement = '';
+    resultDisplay = '';
+  }
+  
+  updateDisplay(statement, resultDisplay);
+  
   operator = '';
   workingNumber = '';
   return;  
