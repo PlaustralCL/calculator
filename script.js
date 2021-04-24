@@ -77,10 +77,6 @@ function handleClick(event){
       clearAll();
       break;
     case 'decimal':
-      //prevent multiple decimals
-      if (workingNumber.match(/\./g) !== null) { 
-        return;
-      }
       processNumber('.');
       break;
     case 'delete':
@@ -246,6 +242,10 @@ function processEquals() {
 }
 
 function processNumber(numberId) {
+  //prevent multiple decimals
+  if (numberId === '.' && workingNumber.match(/\./g) !== null) { 
+    return;
+  }
   //Reset the displays if a new calculation is started after an equals sign
   if (storedNumber.length !== 0 && workingNumber.length === 0 && operator.length === 0) {
     statement = '';
