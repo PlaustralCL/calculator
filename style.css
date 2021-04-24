@@ -2,6 +2,10 @@
   font-family: sans-serif;
 }
 
+.title {
+  text-align: center;
+}
+
 .container {
   display: flex;
   justify-content: center;
@@ -63,6 +67,40 @@
   font-size: 16px;
   font-weight: bold;
 }
+
+.break {
+  width: 100%;
+}
+
+@media (max-width: 544px) {
+  .calc-body {
+    height: 450px;
+    width: 300px;
+
+  }
+
+  .statement {
+    width: 290px;
+  }
+
+  .result {
+    height: 60px;
+    width: 290px;
+    padding-top: 10px;
+  }
+
+  .buttons {
+    width: 290px;
+  }
+
+  .btn {
+    height: 50px;
+    width: 66px;
+  }
+
+
+}
+
 
 /**** Modal ****/
 .modal {
