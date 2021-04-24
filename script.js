@@ -198,13 +198,17 @@ function invertNumber() {
 
   console.log('test');
   workingNumber = 1 / parseFloat(workingNumber);
+
   workingNumber = workingNumber.toString();
+
 
   /** different treatment required if spaces are present */
   if (statement.search(/\s/) === -1) { // No spaces present = true
-    statement = workingNumber;
+    statement = limitDecimalPlaces(workingNumber, 3);
   } else {
-      statement = statement.slice(0, statement.lastIndexOf(' ')) + ' ' + workingNumber;
+      
+      statement = statement.slice(0, statement.lastIndexOf(' ')) + ' ' +
+          limitDecimalPlaces(workingNumber, 3);
   }
 
   updateDisplay(statement, resultDisplay);
@@ -213,6 +217,28 @@ function invertNumber() {
 function launchModal() {
   console.log('launchModal');
   document.querySelector('#modal').style.display = 'flex';
+}
+
+/**
+ * Evaluates a number, passed as a string. If the number has more than three
+ * digits after the decimal, returns a string with no more than 3 digits after
+ * the decimal.
+ * @param {string} number - a number as a string
+ * @param {umber} digits - the number of digits after the decimal to show
+ * @returns {string} - number as string with no more than three decimal places
+ */
+function limitDecimalPlaces(number, digits) {
+  // return number if no decimal places
+  if (parseFloat(number) % 1 === 0) {
+    return number;
+  }
+  
+  const decimalPlaces = number.match(/\.(\d+)/)[1].length;
+  if (decimalPlaces >= 4) {
+    return parseFloat(number).toFixed(digits).toString();
+  }
+
+  return number;
 }
 
 function processEqualsButton() {
@@ -247,11 +273,13 @@ function processEqualsButton() {
    * answer.
    */
   if (amountOperators - amountNegativeSigns >= 2) {
-    statement = `(${document.querySelector('#result').textContent} ${operator} ${workingNumber})`;
+    console.log('line 276');
+    const resultContent = document.querySelector('#result').textContent
+    statement = `(${limitDecimalPlaces(resultContent, 3)} ${operator} ${limitDecimalPlaces(workingNumber, 3)})`;
   } 
 
   const result = findCalculation(operator, parseFloat(storedNumber), parseFloat(workingNumber));
-  resultDisplay = result;
+  resultDisplay = limitDecimalPlaces(result.toString(), 10);
   storedNumber = result.toString();
 
   if (result === 'ERROR') {
@@ -386,9 +414,10 @@ function squareOrRootNumber(exponent) {
 
  /** different treatment required if spaces are present */
  if (statement.search(/\s/) === -1) { // No spaces present = true
-   statement = workingNumber;
+   statement = limitDecimalPlaces(workingNumber, 3);
  } else {
-     statement = statement.slice(0, statement.lastIndexOf(' ')) + ' ' + workingNumber;
+     statement = statement.slice(0, statement.lastIndexOf(' ')) + ' ' +
+        limitDecimalPlaces(workingNumber, 3);
  }
 
  updateDisplay(statement, resultDisplay);
