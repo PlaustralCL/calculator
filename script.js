@@ -110,7 +110,7 @@ function directListnerEvent(eventId){
 }
 
 function handleClick(event) {
-  document.querySelector('#result').focus();
+  document.querySelector('#focusButton').focus();
   directListnerEvent(event.target.id);
 }
 

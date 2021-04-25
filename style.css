@@ -81,6 +81,26 @@
   font-weight: bold;
 }
 
+.btn--focus {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: white;
+  border-style: none;
+  box-shadow: none;
+}
+
+.btn--focus:active,
+.btn--focus:focus,
+.btn--focus:focus-within,
+.btn--focus:target,
+.btn--focus:hover,
+.btn--focus:focus-within {
+  border-style: none;  
+  background-color: white;
+  box-shadow: none;
+}
+
 .break {
   width: 100%;
 }
