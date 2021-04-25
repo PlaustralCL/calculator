@@ -7,7 +7,7 @@ let operator = '';
 
 /** Event Listeners */
 document.querySelector('.buttons').addEventListener('click', handleClick);
-document.querySelector('#modal__exit').addEventListener('click', handleClick);;
+document.querySelector('#modal__exit').addEventListener('click', handleClick);
 document.addEventListener('keydown', handleKeyboard);
 
 /** Functions */
@@ -110,6 +110,7 @@ function directListnerEvent(eventId){
 }
 
 function handleClick(event) {
+  document.querySelector('#result').focus();
   directListnerEvent(event.target.id);
 }
 
@@ -191,6 +192,8 @@ function clearEntry() {
 
 function closeModal() {
   document.querySelector('#modal').style.display = 'none';
+  document.querySelector('.buttons').addEventListener('click', handleClick);
+  document.addEventListener('keydown', handleKeyboard);
 }
 
 function filterKeyboard(operatorId) {
@@ -242,6 +245,13 @@ function invertNumber() {
 function launchModal() {
   console.log('launchModal');
   document.querySelector('#modal').style.display = 'flex';
+
+  /**Remove event listeners to prevent trying to calcualte behind the modal */
+  document.querySelector('.buttons').removeEventListener('click', handleClick);
+  document.removeEventListener('keydown', handleKeyboard);
+
+  document.addEventListener('keydown', closeModal, {once: true});
+  
 }
 
 function launchToast() {
