@@ -26,8 +26,10 @@
 
 .calc-body {
   box-sizing: border-box;
+  padding-top: 10px;
+  padding-bottom: 10px;
   position: relative;
-  height: 625px;
+  height: 635px;
   width: 410px;
   display: flex;
   flex-wrap: wrap;
@@ -42,7 +44,7 @@
 .statement {
   box-sizing: border-box;
   height: 35px;
-  width: 400px;
+  width: 385px;
   padding-left: 10px;
   padding-right: 10px;
   padding-top: 5px;
@@ -54,7 +56,7 @@
 .result {
   box-sizing: border-box;
   height: 90px;
-  width: 400px;
+  width: 385px;
   padding-right: 10px;
   padding-left: 10px;
   padding-top: 20px;
@@ -113,15 +115,17 @@
   .calc-body {
     height: 450px;
     width: 300px;
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
 
   .statement {
-    width: 290px;
+    width: 275px;
   }
 
   .result {
     height: 60px;
-    width: 290px;
+    width: 275px;
     padding-top: 10px;
   }
 
