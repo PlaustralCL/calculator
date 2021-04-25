@@ -7,8 +7,8 @@ let operator = '';
 
 /** Event Listeners */
 document.querySelector('.buttons').addEventListener('click', handleClick);
-document.querySelector('#modal__exit').addEventListener('click', handleClick);
-
+document.querySelector('#modal__exit').addEventListener('click', handleClick);;
+document.addEventListener('keydown', handleKeyboard);
 
 /** Functions */
 
@@ -62,29 +62,29 @@ function findCalculation(operator, firstNumber, secondNumber) {
   }
 }
 
-function handleClick(event){
-  console.log('handleClick');
-  if (event.target.id.search(/[0-9]/) !== -1) { // deal with numbers
-    processNumberButton(event.target.id);
+function directListnerEvent(eventId){
+  console.log(`${typeof eventId}`);
+  if (eventId.search(/[0-9]/) !== -1) { // deal with numbers
+    processNumberButton(eventId);
     return;
   }
   
-  switch (event.target.id) {
+  switch (eventId) {
     case 'buttons':
       break;
     case 'ce':
       clearEntry();
       break;
-    case 'clear':
+    case 'Escape':
       clearAll();
       break;
     case 'decimal':
       processNumberButton('.');
       break;
-    case 'delete':
+    case 'Backspace':
       backspaceButton();
       break;
-    case 'equals':
+    case 'Enter':
       processEqualsButton();
       break;
     case 'invert':
@@ -103,10 +103,26 @@ function handleClick(event){
       squareOrRootNumber(2);
       break
     default:
-      processOperatorButton(event.target.id);
+      processOperatorButton(eventId);
   }
   
   return;
+}
+
+function handleClick(event) {
+  directListnerEvent(event.target.id);
+}
+
+function handleKeyboard(event) {
+  console.log(`${event.key}`);
+  let eventId = event.key;
+  if (eventId === '.'){
+    
+    eventId = 'decimal';
+    
+  }
+
+  directListnerEvent(eventId);
 }
 
 function backspaceButton() {
@@ -176,6 +192,16 @@ function clearEntry() {
 function closeModal() {
   document.querySelector('#modal').style.display = 'none';
 }
+
+function filterKeyboard(operatorId) {
+  if (operatorId.match(/[+\-/*^]/g) === null){
+    console.log('no operator');
+    return false;
+  }
+  console.log('is operator');
+  return true;
+}
+
 
 function invertNumber() {
   /**Allow the result (workingNumber) to be inverted and used in the next calculation
@@ -313,8 +339,11 @@ function processNumberButton(numberId) {
     updateDisplay(statement, resultDisplay);
   }
 
-  /**Limit the size of the working number to 10 digits*/
-  if(workingNumber.length > 0 && workingNumber.match(/[0-9]/g).length >= 10) {
+  /**Limit the size of the working number to 10 digits
+   * The first check is an arbitray number greater than 1 and less than 10.
+   * It has to be greater than 0 to avoid problems with decimals
+  */
+  if(workingNumber.length > 7 && workingNumber.match(/[0-9]/g).length >= 10) {
     launchToast();
     return;
   }
@@ -326,6 +355,9 @@ function processNumberButton(numberId) {
 }
 
 function processOperatorButton(operatorId) {
+  if (filterKeyboard(operatorId) === false) {
+    return;
+  }
   /** See processOperator-tables.md in the planning folder for more detail
    * on the conditions.
    */
@@ -346,6 +378,8 @@ function processOperatorButton(operatorId) {
     operator = operatorId;
     return;
   }
+
+  
 
   /** Condition 3
    * Inital state: 1 1 1
