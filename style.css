@@ -4,7 +4,9 @@
     default text: #f8f8f2
     background: #282a36
     operator text: #50fa7b
+    warning: #ff5555
     displays: #bcc2cd
+    calculator body: #44475a
 
 
 */
@@ -55,7 +57,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: lightblue;
+  background-color: #44475a;
   border-style: solid;
   
 }
@@ -91,7 +93,6 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-
 }
 
 .btn {
@@ -105,8 +106,17 @@
   font-weight: bold;
 }
 
+.btn:hover {
+  background-color: #44475a;
+}
+
 .btn--operator {
   color: #50fa7b;
+}
+
+.btn--equals {
+  background: linear-gradient(135deg,#80ffea,#8aff80);
+  color: #0000EE
 }
 
 .btn--warning {
@@ -137,9 +147,48 @@
   width: 100%;
 }
 
+/**** Modal ****/
+.modal { /*included in the media querry*/
+  box-sizing: border-box;
+  position: absolute;
+  display: none;
+  top: 2px;
+  left: 2px;
+  height: 135px;
+  width: 400px;
+  background-color: #bcc2cd;
+  border-color: #ff5555;
+  border-style: solid;
+  color: #ff5555;
+  text-align: center;
+  font-size: 36px;
+}
+
+.modal__text {
+  margin-top: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+}
+
+.modal__exit {
+  position: absolute;
+  margin: 0;
+  top: -5px;
+  right: 5px;
+}
+
+.modal__exit:hover {
+  cursor: pointer;
+}
+
 @media (max-width: 544px) {
   .title {
     font-size: 28px;
+  }
+
+  .footer__text {
+    font-size: 12px;
   }
 
   .calc-body {
@@ -167,42 +216,17 @@
     height: 50px;
     width: 66px;
   }
+
+  .modal {
+    width: 280px;
+    height: 96px;
+    top: 6px;
+    left: 7px;
+    font-size: 24px;
+  }
 }
 
-/**** Modal ****/
-.modal {
-  box-sizing: border-box;
-  position: absolute;
-  display: none;
-  top: 2px;
-  left: 2px;
-  height: 135px;
-  width: 400px;
-  background-color: white;
-  border-color: red;
-  border-style: solid;
-  color: red;
-  text-align: center;
-  font-size: 36px;
-}
 
-.modal__text {
-  margin-top: 10px;
-  margin-left: 5px;
-  margin-right: 5px;
-  margin-bottom: 10px;
-}
-
-.modal__exit {
-  position: absolute;
-  margin: 0;
-  top: -5px;
-  right: 5px;
-}
-
-.modal__exit:hover {
-  cursor: pointer;
-}
 
 /**** Toast ****/
 /* from https://www.w3schools.com/howto/howto_js_snackbar.asp */
@@ -216,9 +240,9 @@
   margin: auto;
   /* margin-left: -125px; Divide value of min-width by 2 */
   z-index: 1; /* Add a z-index if needed */
-  background-color: #333; /* Black background color */
-  border-radius: 2px; /* Rounded borders */
-  color: #fff; /* White text color */
+  background-color: #44475a; 
+  border-radius: 9999px; /* Rounded borders */
+  color: #ff5555; 
   text-align: center; /* Centered text */
   /* left: 50%; Center the snackbar */
 }
