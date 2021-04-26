@@ -13,8 +13,8 @@
 
 
 .body {
-  font-family: sans-serif;
   background-color: #282a36;
+  font-family: 'Inconsolata', monospace;
 }
 
 .title {
