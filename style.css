@@ -36,6 +36,7 @@
 
 .footer_text__link {
   color: #f8f8f2;
+  text-decoration: none;
 }
 
 .container {
@@ -95,6 +96,13 @@
   justify-content: center;
 }
 
+.fa-backspace {
+  font-size: 24px;
+}
+
+.fa-square-root-alt {
+  font-size: 20px;
+}
 .btn {
   box-sizing: border-box;
   height: 75px;

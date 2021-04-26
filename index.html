@@ -8,6 +8,8 @@
 
     <!-- Stye Sheet-->    
     <link rel="stylesheet" href="style.css" media="screen">
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/6326b255ea.js" crossorigin="anonymous"></script>
   </head>
   
   <body class="body">
@@ -24,12 +26,12 @@
           <button id="^" class="btn btn--operator">x^n</button>
           <button id="Escape" class="btn btn--warning ">AC</button>
           <button id="ce" class="btn btn--warning ">CE</button>
-          <button id="Backspace" class="btn btn--warning ">DEL</button>
+          <button id="Backspace" class="btn btn--warning "><i class="fas fa-backspace"></i></button>
           <div class="break"></div>
           <button id="invert" class="btn btn--operator">1/x</button>
           <button id="squared" class="btn btn--operator">x^2</button>
-          <button id="sqrt" class="btn btn--operator">sqrt</button>
-          <button id="/" class="btn btn--operator">/</button>
+          <button id="sqrt" class="btn btn--operator"><i class="fas fa-square-root-alt"></i></button>
+          <button id="/" class="btn btn--operator"><i class="fas fa-divide"></i></button>
           <div class="break"></div>
           <button id="7" class="btn">7</button>
           <button id="8" class="btn">8</button>
@@ -39,7 +41,7 @@
           <button id="4" class="btn">4</button>
           <button id="5" class="btn">5</button>
           <button id="6" class="btn">6</button>
-          <button id="-" class="btn btn--operator">-</button>
+          <button id="-" class="btn btn--operator"><i class="fas fa-minus"></i></button>
           <div class="break"></div>
           <button id="1" class="btn">1</button>
           <button id="2" class="btn">2</button>
@@ -61,7 +63,9 @@
     
     <footer class="footer">
       <p class="footer__text">
-        <a class="footer_text__link" href="https://github.com/PlaustralCL/calculator" target="_blank">Github</a>
+        <a class="footer_text__link" 
+            href="https://github.com/PlaustralCL/calculator" 
+            target="_blank"><i class="fab fa-github"></i> Github</a>
       </p>
     </footer>
     <button id="focusButton" class="btn--focus" aria-hidden="true"></button>
