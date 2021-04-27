@@ -242,7 +242,7 @@ function invertNumber() {
   updateDisplay(statement, resultDisplay);
 }
 
-function launchModal() {
+function displayZeroErrorMsg() {
   console.log('launchModal');
   document.querySelector('#modal').style.display = 'flex';
 
@@ -321,7 +321,7 @@ function processEqualsButton() {
   const result = findCalculation(operator, parseFloat(storedNumber), parseFloat(workingNumber));
  
   if (result === 'ERROR') {
-    launchModal();
+    displayZeroErrorMsg();
     storedNumber = '';
     statement = '';
     resultDisplay = '';
