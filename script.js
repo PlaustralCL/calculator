@@ -110,6 +110,7 @@ function directListnerEvent(eventId){
 }
 
 function handleClick(event) {
+  console.log(event.target.id);
   document.querySelector('#focusButton').focus();
   directListnerEvent(event.target.id);
 }
@@ -349,11 +350,12 @@ function processNumberButton(numberId) {
     updateDisplay(statement, resultDisplay);
   }
 
-  /**Limit the size of the working number to 10 digits
-   * The first check is an arbitray number greater than 1 and less than 10.
-   * It has to be greater than 0 to avoid problems with decimals
+  /**Limit the size of the working number to no more than 10 characters, 
+   * inclding decimals and negative signs and limit the overaall length of
+   * statement to no more than 21 characters to keep from overflowing the
+   *  statement area.
   */
-  if(workingNumber.length > 7 && workingNumber.match(/[0-9]/g).length >= 10) {
+  if(workingNumber.length > 10 || statement.length >=21 ) {
     launchToast();
     return;
   }
