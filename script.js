@@ -63,7 +63,6 @@ function findCalculation(operator, firstNumber, secondNumber) {
 }
 
 function directListnerEvent(eventId){
-  console.log(`${typeof eventId}`);
   if (eventId.search(/[0-9]/) !== -1) { // deal with numbers
     processNumberButton(eventId);
     return;
@@ -116,7 +115,6 @@ function handleClick(event) {
 }
 
 function handleKeyboard(event) {
-  console.log(`${event.key}`);
   let eventId = event.key;
   if (eventId === '.'){
     
@@ -320,16 +318,20 @@ function processEqualsButton() {
   } 
 
   const result = findCalculation(operator, parseFloat(storedNumber), parseFloat(workingNumber));
- 
+  console.log({result});
+  console.log('result type - ' + typeof result);
+  console.log('result length - ' + result.toString().length);
   if (result === 'ERROR') {
     displayZeroErrorMsg();
     storedNumber = '';
     statement = '';
     resultDisplay = '';
-  } else {
-    resultDisplay = limitDecimalPlaces(result.toString(), 10);
-    storedNumber = result.toString();
-  }
+  } else if (result.toString().length >= 14) {
+      resultDisplay = result.toExponential(4).toString();
+    } else {
+      resultDisplay = limitDecimalPlaces(result.toString(), 10);
+      storedNumber = result.toString();
+      }
   
   updateDisplay(statement, resultDisplay);
   
