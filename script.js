@@ -259,9 +259,19 @@ function displayZeroErrorMsg() {
   
 }
 
-function launchToast() {
-  document.querySelector('#excessDigits').classList.add('toast--show');
-  setTimeout(() => document.querySelector('#excessDigits').classList.remove('toast--show'), 3000);
+function launchToast(purpose) {
+  switch (purpose) {
+    case 'excessDigits':
+      message = 'You have reached the limit of the display';
+      toastClasses = ["toast--warning", "toast--show"];
+      break;
+    default:
+      message = 'notification';
+  }
+
+  document.querySelector('#toast').textContent = message;
+  document.querySelector('#toast').classList.add(...toastClasses);
+  setTimeout(() => document.querySelector('#toast').classList.remove(...toastClasses), 3000);
 }
 
 /**
@@ -364,7 +374,7 @@ function processNumberButton(numberId) {
    *  statement area.
   */
   if(workingNumber.length > 10 || statement.length >=21 ) {
-    launchToast();
+    launchToast('excessDigits');
     return;
   }
 

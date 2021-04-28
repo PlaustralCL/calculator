@@ -5,7 +5,8 @@
     background: #282a36
     operator text: #50fa7b
     warning: #ff5555
-    displays: #bcc2cd
+    caution: #f1fa8c
+    display/ screen background: #bcc2cd
     calculator body: #44475a
 
 
@@ -250,9 +251,17 @@
   z-index: 1; /* Add a z-index if needed */
   background-color: #44475a; 
   border-radius: 9999px; /* Rounded borders */
-  color: #ff5555; 
+  color: #f8f8f2; 
   text-align: center; /* Centered text */
   /* left: 50%; Center the snackbar */
+}
+
+.toast--warning {
+  color: #ff5555;
+}
+
+.toast--caution {
+  color: #f1fa8c;
 }
 
 /* Show the snackbar when clicking on a button (class added with JavaScript) */
