@@ -134,6 +134,7 @@ function handleKeyboard(event) {
 function backspaceButton() {
   /**Only allow backspace for working number */
   if (workingNumber === '') {
+    launchToast('operand');
     return;
   }
   workingNumber = workingNumber.slice(0, workingNumber.length - 1);
@@ -184,7 +185,7 @@ function clearAll() {
 function clearEntry() {
   workingNumber = '';
   /** different treatement needed if the statement display has spaces or not */
-  if (statement.search(/\s/) === -1) { //no spaces === true
+  if (statement.search(/\s/) === -1) { //no spaces present === -1
     statement = '';
   } else {
     // Looks for the last space charter and slices from there to the end
@@ -268,6 +269,10 @@ function launchToast(purpose) {
     case 'maxNumber':
       message = 'The answer exceeds the capabilites of this calculator';
       toastClasses = ["toast--warning", "toast--show"];
+      break;
+    case 'operand':
+      message = 'This function only works for the current operand';
+      toastClasses = ["toast--caution", "toast--show"];
       break;
     default:
       message = 'notification';
