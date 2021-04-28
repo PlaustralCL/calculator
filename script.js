@@ -109,9 +109,15 @@ function directListnerEvent(eventId){
 }
 
 function handleClick(event) {
-  console.log(event.target.id);
   document.querySelector('#focusButton').focus();
-  directListnerEvent(event.target.id);
+  /**The icons used on the buttons don't have the proper id, but they all have
+   * the same class, 'fas'. This assigns the parent id if the class is fas.
+   */
+  if (event.target.classList[0] === 'fas') {
+    directListnerEvent(event.target.parentNode.id);
+  } else {
+    directListnerEvent(event.target.id);
+  }
 }
 
 function handleKeyboard(event) {
