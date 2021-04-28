@@ -242,15 +242,13 @@
 /* from https://www.w3schools.com/howto/howto_js_snackbar.asp */
 .toast {
   position: fixed; /* Sit on top of the screen */
-  bottom: 40px; /* 30px from the bottom */
+  bottom: 80px; 
   width: 250px; 
-  
   padding: 16px; /* Padding */
   margin: auto;
   z-index: 1; /* Add a z-index if needed */
   display: none; /* Hidden by default.*/
   justify-content: center;
- 
   background-color: #44475a; 
   border-radius: 9999px; /* Rounded borders */
   color: #f8f8f2; 
@@ -278,20 +276,47 @@
 /* Animations to fade the snackbar in and out */
 @-webkit-keyframes fadein {
   from {bottom: 0; opacity: 0;}
-  to {bottom: 40px; opacity: 1;}
+  to {bottom: 80px; opacity: 1;}
 }
 
 @keyframes fadein {
   from {bottom: 0; opacity: 0;}
-  to {bottom: 40px; opacity: 1;}
+  to {bottom: 80px; opacity: 1;}
 }
 
 @-webkit-keyframes fadeout {
-  from {bottom: 40px; opacity: 1;}
+  from {bottom: 80px; opacity: 1;}
   to {bottom: 0; opacity: 0;}
 }
 
 @keyframes fadeout {
-  from {bottom: 40px; opacity: 1;}
+  from {bottom: 80px; opacity: 1;}
   to {bottom: 0; opacity: 0;}
+}
+
+@media (max-width: 544px) {
+  .toast {
+    bottom: 40px;
+  }
+
+  @-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 40px; opacity: 1;}
+  }
+  
+  @keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 40px; opacity: 1;}
+  }
+  
+  @-webkit-keyframes fadeout {
+    from {bottom: 40px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+  }
+  
+  @keyframes fadeout {
+    from {bottom: 40px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+  }
+
 }
