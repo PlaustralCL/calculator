@@ -169,8 +169,9 @@
   border-color: #ff5555;
   border-style: solid;
   color: #ff5555;
-  text-align: center;
+  font-family: sans-serif;
   font-size: 36px;
+  text-align: center;
 }
 
 .modal__text {
@@ -242,18 +243,19 @@
 .toast {
   position: fixed; /* Sit on top of the screen */
   bottom: 40px; /* 30px from the bottom */
-  display: none; /* Hidden by default.*/
-  justify-content: center;
-  min-width: 250px; /* Set a default minimum width */
+  width: 250px; 
+  
   padding: 16px; /* Padding */
   margin: auto;
-  /* margin-left: -125px; Divide value of min-width by 2 */
   z-index: 1; /* Add a z-index if needed */
+  display: none; /* Hidden by default.*/
+  justify-content: center;
+ 
   background-color: #44475a; 
   border-radius: 9999px; /* Rounded borders */
   color: #f8f8f2; 
+  font-family: sans-serif;
   text-align: center; /* Centered text */
-  /* left: 50%; Center the snackbar */
 }
 
 .toast--warning {
