@@ -265,6 +265,10 @@ function launchToast(purpose) {
       message = 'You have reached the limit of the display';
       toastClasses = ["toast--warning", "toast--show"];
       break;
+    case 'maxNumber':
+      message = 'The answer exceeds the capabilites of this calculator';
+      toastClasses = ["toast--warning", "toast--show"];
+      break;
     default:
       message = 'notification';
   }
@@ -328,26 +332,31 @@ function processEqualsButton() {
    * answer.
    */
   if (amountOperators - amountNegativeSigns >= 2) {
-    console.log('line 276');
+    
     const resultContent = document.querySelector('#result').textContent
     statement = `(${limitDecimalPlaces(resultContent, 3)} ${operator} ${limitDecimalPlaces(workingNumber, 3)})`;
   } 
 
   const result = findCalculation(operator, parseFloat(storedNumber), parseFloat(workingNumber));
-  console.log({result});
-  console.log('result type - ' + typeof result);
-  console.log('result length - ' + result.toString().length);
+
   if (result === 'ERROR') {
     displayZeroErrorMsg();
     storedNumber = '';
     statement = '';
     resultDisplay = '';
-  } else if (result.toString().length >= 14) {
-      resultDisplay = result.toExponential(4).toString();
-    } else {
-      resultDisplay = limitDecimalPlaces(result.toString(), 10);
-      storedNumber = result.toString();
-      }
+    updateDisplay(statement, resultDisplay);
+    return;
+  } else if (result === Infinity || result === -Infinity) {
+      launchToast('maxNumber');
+      return;
+    } else if (result.toString().length >= 14) {
+        resultDisplay = result.toExponential(4).toString();
+      } else {
+          resultDisplay = limitDecimalPlaces(result.toString(), 10);
+          storedNumber = result.toString();
+        }
+  
+ 
   
   updateDisplay(statement, resultDisplay);
   
