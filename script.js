@@ -183,6 +183,11 @@ function clearAll() {
 }
 
 function clearEntry() {
+  //Prevent clearing part of statement after the equals sign
+  if (workingNumber === '') {
+    launchToast('operand');
+    return;
+  }
   workingNumber = '';
   /** different treatement needed if the statement display has spaces or not */
   if (statement.search(/\s/) === -1) { //no spaces present === -1
@@ -264,20 +269,21 @@ function launchToast(purpose) {
   switch (purpose) {
     case 'excessDigits':
       message = 'You have reached the limit of the display';
-      toastClasses = ["toast--warning", "toast--show"];
+      toastClasses = ["toast--warning"];
       break;
     case 'maxNumber':
       message = 'The answer exceeds the capabilites of this calculator';
-      toastClasses = ["toast--warning", "toast--show"];
+      toastClasses = ["toast--warning"];
       break;
     case 'operand':
       message = 'This function only works for the current operand';
-      toastClasses = ["toast--caution", "toast--show"];
+      toastClasses = ["toast--caution"];
       break;
     default:
       message = 'notification';
   }
 
+  toastClasses.push("toast--show");
   document.querySelector('#toast').textContent = message;
   document.querySelector('#toast').classList.add(...toastClasses);
   setTimeout(() => document.querySelector('#toast').classList.remove(...toastClasses), 3000);
