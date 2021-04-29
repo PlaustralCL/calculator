@@ -104,6 +104,7 @@
 .fa-square-root-alt {
   font-size: 20px;
 }
+
 .btn {
   box-sizing: border-box;
   height: 75px;
@@ -118,6 +119,22 @@
 .btn:hover {
   background-color: #44475a;
 }
+
+.btn--keypress {
+  background-color: #44475a;
+  animation-duration: .5s;
+  animation-name: fadeKey;
+}
+
+/* @keyframes fadeKey {
+  from {
+    background-color: #282a36;
+  }
+
+  to {
+    background-color: #44475a;
+  }
+} */
 
 .btn--operator {
   color: #50fa7b;

@@ -114,20 +114,26 @@ function handleClick(event) {
    * the same class, 'fas'. This assigns the parent id if the class is fas.
    */
   if (event.target.classList[0] === 'fas') {
-    directListnerEvent(event.target.parentNode.id);
+    targetId = event.target.parentNode.id;
   } else {
-    directListnerEvent(event.target.id);
-  }
+      targetId = event.target.id;
+    }
+  directListnerEvent(targetId);
 }
 
 function handleKeyboard(event) {
   let eventId = event.key;
   if (eventId === '.'){
-    
     eventId = 'decimal';
-    
   }
-
+ 
+  //If an id does not exists, returns
+  if (document.getElementById(eventId) === null ) {
+    return;
+  }
+     //Add visual effect to buttons based on keys pressed
+  document.getElementById(eventId).classList.add('btn--keypress');
+  setTimeout(() => document.getElementById(eventId).classList.remove('btn--keypress'), 150);
   directListnerEvent(eventId);
 }
 
@@ -207,6 +213,10 @@ function closeModal() {
   document.addEventListener('keydown', handleKeyboard);
 }
 
+/** Filters out non-operator keyboard events. Other allowed keyboard events
+ * are already accounted for in the directListnerEvent() function. If no 
+ * operator is dectector returns false so the event can be ignored.
+ */
 function filterKeyboard(operatorId) {
   if (operatorId.match(/[+\-/*^]/g) === null){
     console.log('no operator');
@@ -405,6 +415,9 @@ function processNumberButton(numberId) {
 }
 
 function processOperatorButton(operatorId) {
+  /** Filters out non-allowed keys and returns with no action if a nonallowed
+   * key is detected.
+   */
   if (filterKeyboard(operatorId) === false) {
     return;
   }
