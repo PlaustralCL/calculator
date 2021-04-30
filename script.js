@@ -262,7 +262,7 @@ function invertNumber() {
 
   updateDisplay(statement, resultDisplay);
 }
-
+/** Launces the modal with the divide by zero error message */
 function displayZeroErrorMsg() {
   console.log('launchModal');
   document.querySelector('#modal').style.display = 'flex';
@@ -362,10 +362,7 @@ function processEqualsButton() {
 
   if (result === 'ERROR') {
     displayZeroErrorMsg();
-    storedNumber = '';
-    statement = '';
-    resultDisplay = '';
-    updateDisplay(statement, resultDisplay);
+    clearAll();
     return;
   } else if (result === Infinity || result === -Infinity) {
       launchToast('maxNumber');
