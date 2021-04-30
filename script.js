@@ -327,22 +327,7 @@ function processEqualsButton() {
     return;
   }
 
-  let  amountNegativeSigns = 0;
-
-  /** Look for `-` that are immediately followed by a number. This would indicate
-   * a negative number, not a substraction sign. If none are found then the
-   * match would return null. Not null means a negative sign is present.
-   */
-  if (statement.match(/-(?=[0-9])/g) !== null) {
-    amountNegativeSigns = statement.match(/-(?=[0-9])/g).length;
-  }
-
-  /**Look for `-` that are immediately followed by decimals, indicating a
-   * negative decimal number.
-  */
- if (statement.match(/-(?=\.)/g) !== null) { // not null means a negative decimal is present
-  amountNegativeSigns += statement.match(/-(?=\.)/g).length;
- }
+  let amountNegativeSigns = findNegativeSigns();
  
   const amountOperators = statement.match(/[+\-/*^]/g).length; //Number of operators present
   
@@ -364,23 +349,41 @@ function processEqualsButton() {
     displayZeroErrorMsg();
     clearAll();
     return;
-  } else if (result === Infinity || result === -Infinity) {
+  } else if (result === Infinity || result === -Infinity) { //deal with very large numbers
       launchToast('maxNumber');
       return;
-    } else if (result.toString().length >= 14) {
+    } else if (result.toString().length >= 14) { //keep from overflowing display
         resultDisplay = result.toExponential(4).toString();
       } else {
           resultDisplay = limitDecimalPlaces(result.toString(), 10);
           storedNumber = result.toString();
         }
-  
- 
-  
   updateDisplay(statement, resultDisplay);
   
   operator = '';
   workingNumber = '';
   return;  
+
+
+  function findNegativeSigns() {
+    let amountNegativeSigns = 0;
+
+    /** Look for `-` that are immediately followed by a number. This would indicate
+     * a negative number, not a substraction sign. If none are found then the
+     * match would return null. Not null means a negative sign is present.
+     */
+    if (statement.match(/-(?=[0-9])/g) !== null) {
+      amountNegativeSigns = statement.match(/-(?=[0-9])/g).length;
+    }
+
+    /**Look for `-` that are immediately followed by decimals, indicating a
+     * negative decimal number.
+    */
+    if (statement.match(/-(?=\.)/g) !== null) { // not null means a negative decimal is present
+      amountNegativeSigns += statement.match(/-(?=\.)/g).length;
+    }
+    return amountNegativeSigns;
+  }
 }
 
 function processNumberButton(numberId) {
