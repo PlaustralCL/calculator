@@ -236,7 +236,7 @@ function clearEntry() {
     return;
   }
   workingNumber = '';
-  /** different treatement needed if the statement display has spaces or not */
+  // different treatement needed if the statement display has spaces or not
   if (statement.search(/\s/) === -1) { //no spaces present === -1
     statement = ''; //clears full statement
   } else {
@@ -263,9 +263,8 @@ function closeModal() {
  * Inverts the working number, or the number shown in the result display
  */
 function invertNumber() {
-  /**Allow the result shown on the display to be inverted and used in the next calculation
-  * but not if it is a 0 or empty if the working number is empty.
-  */
+  // Allow the result shown on the display to be inverted and used in the next calculation
+  // but not if it is a 0 or empty if the working number is empty.
   if (workingNumber === '' &&
       document.querySelector('#result').textContent !== '' &&
       document.querySelector('#result').textContent !== '0') {
@@ -283,7 +282,7 @@ function invertNumber() {
   workingNumber = 1 / parseFloat(workingNumber);
   workingNumber = workingNumber.toString();
 
-  /** different treatment required if spaces are present */
+  // different treatment required if spaces are present 
   if (statement.search(/\s/) === -1) { // No spaces present ==== -1 (true)
     statement = limitDecimalPlaces(workingNumber, 3);
   } else {
@@ -295,7 +294,11 @@ function invertNumber() {
 }
 
 /**
- * Launces the modal with the divide by zero error message
+ * Launces the modal with the divide by zero error message. This removes
+ * the normal click and keyboard event listeners to force people to look at
+ * the error message. A one-time eventListener is added for any keydown event
+ * to allow any key to be pressed to close the modal.  The only other way
+ * to close the modal is the exit x in the upper right. 
  */
 function displayZeroErrorMsg() {
   document.querySelector('#modal').style.display = 'flex';
@@ -332,6 +335,7 @@ function launchToast(purpose) {
   toastClasses.push("toast--show");
   document.querySelector('#toast').textContent = message;
   document.querySelector('#toast').classList.add(...toastClasses);
+  //The toast messsage is up for 3 seconds (3000ms)
   setTimeout(() => document.querySelector('#toast').classList.remove(...toastClasses), 3000);
 }
 
@@ -357,6 +361,9 @@ function limitDecimalPlaces(number, digits) {
   return number;
 }
 
+/**
+ * Determines correct action to take when the equals button is pressed
+ */
 function processEqualsButton() {
   // Need to have two numbers and an operator to perform a calculation
   if (storedNumber.length === 0 || workingNumber.length === 0 ||operator.length === 0) {
@@ -367,12 +374,11 @@ function processEqualsButton() {
  
   const amountOperators = statement.match(/[+\-/*^]/g).length; //Number of operators present
   
-  /**After 3rd operator is pressed, resets statement to show the immediate
-   * calculation that gave the result, adding parentheses in the statement.
-   * This limits the size of the statement section to a reasonable amount
-   * while still showing the immediate calculation that caused the displayed 
-   * answer.
-   */
+  // After 3rd operator is pressed, resets statement to show the immediate
+  // calculation that gave the result, adding parentheses in the statement.
+  // This limits the size of the statement section to a reasonable amount
+  // while still showing the immediate calculation that caused the displayed 
+  // answer.
   if (amountOperators - amountNegativeSigns >= 2) {
     
     const resultContent = document.querySelector('#result').textContent
@@ -381,7 +387,7 @@ function processEqualsButton() {
 
   const result = findCalculation(operator, parseFloat(storedNumber), parseFloat(workingNumber));
 
-  if (result === 'ERROR') {
+  if (result === 'ERROR') {// deal with divide by zero errors.
     displayZeroErrorMsg();
     clearAll();
     return;
@@ -400,21 +406,22 @@ function processEqualsButton() {
   workingNumber = '';
   return;  
 
-
+  /**
+   * Finds the number of negative signs in the statement display. Internal to
+   * the processEqualsButton function.
+   */
   function findNegativeSigns() {
     let amountNegativeSigns = 0;
 
-    /** Look for `-` that are immediately followed by a number. This would indicate
-     * a negative number, not a substraction sign. If none are found then the
-     * match would return null. Not null means a negative sign is present.
-     */
+    // Look for `-` that are immediately followed by a number. This would indicate
+    // a negative number, not a substraction sign. If none are found then the
+    // match would return null. Not null means a negative sign is present.
     if (statement.match(/-(?=[0-9])/g) !== null) {
       amountNegativeSigns = statement.match(/-(?=[0-9])/g).length;
     }
 
-    /**Look for `-` that are immediately followed by decimals, indicating a
-     * negative decimal number.
-    */
+    // Look for `-` that are immediately followed by decimals, indicating a
+    // negative decimal number.
     if (statement.match(/-(?=\.)/g) !== null) { // not null means a negative decimal is present
       amountNegativeSigns += statement.match(/-(?=\.)/g).length;
     }
@@ -422,11 +429,17 @@ function processEqualsButton() {
   }
 }
 
+/**
+ * Updates statement display and updates workingNumber when a number or decimal
+ * is pressed
+ * @param {string} numberId 
+ */
 function processNumberButton(numberId) {
   //prevent multiple decimals
   if (numberId === '.' && workingNumber.match(/\./g) !== null) { 
     return;
   }
+
   //Reset the displays if a new calculation is started after an equals sign
   if (storedNumber.length !== 0 && workingNumber.length === 0 && operator.length === 0) {
     statement = '';
@@ -434,11 +447,10 @@ function processNumberButton(numberId) {
     updateDisplay(statement, resultDisplay);
   }
 
-  /**Limit the size of the working number to no more than 10 characters, 
-   * inclding decimals and negative signs and limit the overaall length of
-   * statement to no more than 21 characters to keep from overflowing the
-   *  statement area.
-  */
+  // Limit the size of the working number to no more than 10 characters, 
+  // inclding decimals and negative signs and limit the overaall length of
+  // statement to no more than 21 characters to keep from overflowing the
+  // statement area.
   if(workingNumber.length > 10 || statement.length >=21 ) {
     launchToast('excessDigits');
     return;
@@ -450,6 +462,12 @@ function processNumberButton(numberId) {
   return;
 }
 
+/**
+ * Determines what to do if an operator button add, subtract, multiply, divide,
+ * or exponent, is pressed. This depends on the status of the storedNumber and
+ * the workingNumber, and if an operator is already active.
+ * @param {string} operatorId 
+ */
 function processOperatorButton(operatorId) {
   /** See processOperator-tables.md in the planning folder for more detail
    * on the conditions.
@@ -472,8 +490,6 @@ function processOperatorButton(operatorId) {
     return;
   }
 
-  
-
   /** Condition 3
    * Inital state: 1 1 1
    * Stringing together operations without equals sign
@@ -488,7 +504,6 @@ function processOperatorButton(operatorId) {
     operator = operatorId;
     statement += ` ${operatorId} `;
     updateDisplay(statement, resultDisplay);
-    
     return;  
   }
   
@@ -507,12 +522,12 @@ function processOperatorButton(operatorId) {
   }
   
   /** Conditon 6
-* Initial state: 1 1 0
-* *start new calc with number after equals sign
-* storedNumber is not empty (equals result of previous calculation)
-* workingNumber is not empty
-* operator is empty
-*/
+  * Initial state: 1 1 0
+  * *start new calc with number after equals sign
+  * storedNumber is not empty (equals result of previous calculation)
+  * workingNumber is not empty
+  * operator is empty
+  */
   if (storedNumber.length !== 0 && workingNumber.length !== 0 && operator.length === 0) {
     storedNumber = workingNumber;
     workingNumber = '';
@@ -523,46 +538,53 @@ function processOperatorButton(operatorId) {
   }      
 } // end of process operator
 
+/**
+ * Takes the square root or the square of a number. Depending on which button
+ * is clicked, .5 or 2 is sent from the directListnerEvent function.
+ * @param {number} exponent - only allowed values are .5 and 2.
+ */
 function squareOrRootNumber(exponent) {
-    /**Allow the result (workingNumber) to be squared and used in the next calculation
-  * but not if it is empty.
-  */
   const resultNumber = document.querySelector('#result').textContent;
 
-  /**Don't try to take the square root of a negative number */
+  // Don't try to take the square root of a negative number
   if (exponent === .5 && (workingNumber < 0 || parseFloat(resultNumber) < 0)) {
     return;
   }
 
+  // Allow the number in the result display to be worked on and 
+  // used in the next calculation
   if (workingNumber === '' && resultNumber !== '') {
    workingNumber = resultNumber;
    statement = '';
    resultDisplay = '';
    updateDisplay();
- }
+  }
 
- //Don't square a non number. Needed when calculator first loads
- if (workingNumber === '') {
+  //Don't square a non number. Needed when calculator first loads
+  if (workingNumber === '') {
    console.log('invert return');
    return;
- }
+  }
 
- console.log('test');
- workingNumber = parseFloat(workingNumber) ** exponent;
- workingNumber = workingNumber.toString();
+  console.log('test');
+  workingNumber = parseFloat(workingNumber) ** exponent;
+  workingNumber = workingNumber.toString();
 
- /** different treatment required if spaces are present */
- if (statement.search(/\s/) === -1) { // No spaces present = true
+  //  different treatment required if spaces are present 
+  if (statement.search(/\s/) === -1) { // No spaces present ==== -1 (true)
    statement = limitDecimalPlaces(workingNumber, 3);
- } else {
+  } else { //no spaces in statement
      statement = statement.slice(0, statement.lastIndexOf(' ')) + ' ' +
         limitDecimalPlaces(workingNumber, 3);
- }
-
+    }
  updateDisplay(statement, resultDisplay);
 }
 
-
+/**
+ * Updates the statement and results display on the screen
+ * @param {string} statement 
+ * @param {string} resultDisplay 
+ */
 function updateDisplay(statement, resultDisplay) {
   document.querySelector('#statement').textContent = statement;
   document.querySelector('#result').textContent = resultDisplay;
