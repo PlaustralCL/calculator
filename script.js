@@ -13,8 +13,6 @@ document.addEventListener('keydown', handleKeyboard);
 /** Functions */
 
 function add(a, b) {
-  console.log(typeof a);
-  console.log({b});
   return a + b;
 }
 
@@ -215,7 +213,6 @@ function changeSign() {
  * Clears everything to give a fresh start.
  */
 function clearAll() {
-  console.log('clearAll');
   statement = '';
   resultDisplay = '';
   updateDisplay(statement, resultDisplay);
@@ -562,11 +559,9 @@ function squareOrRootNumber(exponent) {
 
   //Don't square a non number. Needed when calculator first loads
   if (workingNumber === '') {
-   console.log('invert return');
    return;
   }
 
-  console.log('test');
   workingNumber = parseFloat(workingNumber) ** exponent;
   workingNumber = workingNumber.toString();
 
