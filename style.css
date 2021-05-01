@@ -8,10 +8,11 @@
     caution: #f1fa8c
     display/ screen background: #bcc2cd
     calculator body: #44475a
-
-
+  
+  Fonts
+    calculator display: 'Inconsolata', monospace;
+    modal and toast messages: sans-serif;
 */
-
 
 .body {
   background-color: #282a36;
@@ -44,7 +45,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  
 }
 
 .calc-body {
@@ -61,7 +61,6 @@
   align-items: center;
   background-color: #44475a;
   border-style: solid;
-  
 }
 
 .statement {
@@ -122,19 +121,7 @@
 
 .btn--keypress {
   background-color: #44475a;
-  animation-duration: .5s;
-  animation-name: fadeKey;
 }
-
-/* @keyframes fadeKey {
-  from {
-    background-color: #282a36;
-  }
-
-  to {
-    background-color: #44475a;
-  }
-} */
 
 .btn--operator {
   color: #50fa7b;
@@ -253,8 +240,6 @@
   }
 }
 
-
-
 /**** Toast ****/
 /* from https://www.w3schools.com/howto/howto_js_snackbar.asp */
 .toast {
@@ -281,16 +266,15 @@
   color: #f1fa8c;
 }
 
-/* Show the snackbar when clicking on a button (class added with JavaScript) */
 .toast--show {
-  display: flex; /* Show the snackbar */
+  display: flex; 
   /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
   However, delay the fade out process for 2.5 seconds */
   -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
   animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
 
-/* Animations to fade the snackbar in and out */
+/* Animations to fade the toast in and out */
 @-webkit-keyframes fadein {
   from {bottom: 0; opacity: 0;}
   to {bottom: 80px; opacity: 1;}
@@ -335,5 +319,4 @@
     from {bottom: 40px; opacity: 1;}
     to {bottom: 0; opacity: 0;}
   }
-
 }
