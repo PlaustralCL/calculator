@@ -1,4 +1,9 @@
 /** Initialize global variables */
+const MAX_ANSWER_LENGTH = 14;
+const MAX_STATEMENT_DECIMALS = 3;
+const MAX_RESULT_DECIMALS = 10;
+const MAX_WORKING_NUMBER_LENGTH = 10;
+const MAX_STATEMENT_LENGTH = 21;
 let workingNumber = '';
 let storedNumber = '';
 let statement = ''; //string tracking display of problem statement
@@ -379,7 +384,8 @@ function processEqualsButton() {
   if (amountOperators - amountNegativeSigns >= 2) {
     
     const resultContent = document.querySelector('#result').textContent
-    statement = `(${limitDecimalPlaces(resultContent, 3)} ${operator} ${limitDecimalPlaces(workingNumber, 3)})`;
+    // limit the number of decimal places shown in the statement
+    statement = `(${limitDecimalPlaces(resultContent, MAX_STATEMENT_DECIMALS)} ${operator} ${limitDecimalPlaces(workingNumber, MAX_STATEMENT_DECIMALS)})`;
   } 
 
   const result = findCalculation(operator, parseFloat(storedNumber), parseFloat(workingNumber));
@@ -391,10 +397,10 @@ function processEqualsButton() {
   } else if (result === Infinity || result === -Infinity) { //deal with very large numbers
       launchToast('maxNumber');
       return;
-    } else if (result.toString().length >= 14) { //keep from overflowing display
+    } else if (result.toString().length >= MAX_ANSWER_LENGTH) { //keep from overflowing display
         resultDisplay = result.toExponential(4).toString();
       } else {
-          resultDisplay = limitDecimalPlaces(result.toString(), 10);
+          resultDisplay = limitDecimalPlaces(result.toString(), MAX_RESULT_DECIMALS);
           storedNumber = result.toString();
         }
   updateDisplay(statement, resultDisplay);
@@ -448,7 +454,7 @@ function processNumberButton(numberId) {
   // inclding decimals and negative signs and limit the overaall length of
   // statement to no more than 21 characters to keep from overflowing the
   // statement area.
-  if(workingNumber.length > 10 || statement.length >=21 ) {
+  if(workingNumber.length > MAX_WORKING_NUMBER_LENGTH || statement.length >= MAX_STATEMENT_LENGTH ) {
     launchToast('excessDigits');
     return;
   }
