@@ -13,7 +13,7 @@ document.addEventListener('keydown', handleKeyboard);
 /** Functions */
 
 function add(a, b) {
-  console.log({a});
+  console.log(typeof a);
   console.log({b});
   return a + b;
 }
@@ -37,10 +37,16 @@ function exponent(a, b) {
   return a ** b;
 }
 
+/**
+ * Determines which arirthmetic function is needed based on the operator.
+ * The number parameters were converted from strings to numbers in the 
+ * processEqualsButton function.
+ * @param {string} operator 
+ * @param {number} firstNumber 
+ * @param {number} secondNumber 
+ * @returns 
+ */
 function findCalculation(operator, firstNumber, secondNumber) {
-  console.log('operate()');
-  console.log({numberStored: storedNumber});
-  console.log(operator);
   switch(operator) {
     case '+':
       return add(firstNumber, secondNumber);
@@ -62,12 +68,18 @@ function findCalculation(operator, firstNumber, secondNumber) {
   }
 }
 
+/**
+ * Calls the proper function based on what key was pressed or button clicked.
+ * Receives the eventId from handleClick or handleKeyboard functions.
+ * @param {string} eventId 
+ */
 function directListnerEvent(eventId){
   if (eventId.search(/[0-9]/) !== -1) { // deal with numbers
     processNumberButton(eventId);
     return;
   }
   
+  //Everything that is not a number
   switch (eventId) {
     case 'buttons':
       break;
@@ -108,6 +120,11 @@ function directListnerEvent(eventId){
   return;
 }
 
+/**
+ * Receives teh event from the click eventListener and parses out the proper Id
+ * before passing it to the directListnerEvent function.
+ * @param {string} event 
+ */
 function handleClick(event) {
   document.querySelector('#focusButton').focus();
   /**The icons used on the buttons don't have the proper id, but they all have
@@ -121,12 +138,18 @@ function handleClick(event) {
   directListnerEvent(targetId);
 }
 
+/**
+ * Receives the event from the keydown eventListener and  parses it into just 
+ * the Id before passing it to the directListner function. Also calls the 
+ * function to add a visual effect on keypress and filters for key presses
+ * that don't have a purpose in the calculator.
+ * @param {string} event 
+ */
 function handleKeyboard(event) {
   let eventId = event.key;
   if (eventId === '.'){
     eventId = 'decimal';
   }
- 
   //If an id does not exists, returns
   if (document.getElementById(eventId) === null ) {
     return;
@@ -137,6 +160,11 @@ function handleKeyboard(event) {
   directListnerEvent(eventId);
 }
 
+/**
+ * Removes the newest digit of the working number, one digit at a time, 
+ * and updates the statement display. Only works on the working number. Any
+ * operator and numbers entered before the operator are unaffected.
+ */
 function backspaceButton() {
   /**Only allow backspace for working number */
   if (workingNumber === '') {
@@ -146,37 +174,46 @@ function backspaceButton() {
   workingNumber = workingNumber.slice(0, workingNumber.length - 1);
   statement = statement.slice(0, statement.length - 1);
   updateDisplay(statement, resultDisplay);
-  
   return;
 }
 
+/**
+ * Changes the sign of the working number and updates the statement display 
+ */
 function changeSign() {
+  //If there is no working number, use the value shown in the result display,
+  //if there is one, as the working number
   if (workingNumber === '' && document.querySelector('#result').textContent !== '') {
     workingNumber = document.querySelector('#result').textContent;
+    //reset the display 
     statement = '';
     resultDisplay = '';
     updateDisplay();
   } else if (workingNumber.length === 0) { // nothing to change
-       console.log('no sign change - return');
       return;
     }
+  
+  //Make the sign change in the working number  
   if (workingNumber.slice(0,1) === '-') { // Negative number - already has a negative sign
     workingNumber = workingNumber.slice(1); // removes negative sign
   } else { // positive number
       workingNumber = `-${workingNumber}`; // adds negative sign
-  }
+    }
 
-  if (operator.length === 0) {
+  if (operator.length === 0) { //no operator present
     statement = workingNumber;
   } else {
-      /** the line below does not work properly for the first entry, if more than 1 digit */
       statement = statement.slice(0, statement.lastIndexOf(' ')) + ' '; //removes the old number
-      statement += workingNumber; // replace with the new number, with switched sign
+      statement += workingNumber; // replace with the new number, with switched sign 
+        //but leave everything before the operator in place
     }
   updateDisplay(statement, resultDisplay);
   return;
 }
 
+/**
+ * Clears everything to give a fresh start.
+ */
 function clearAll() {
   console.log('clearAll');
   statement = '';
@@ -188,6 +225,10 @@ function clearAll() {
   return;
 }
 
+/**
+ * Clears the working number and the corresponding portion of the statement
+ * display.
+ */
 function clearEntry() {
   //Prevent clearing part of statement after the equals sign
   if (workingNumber === '') {
@@ -197,9 +238,10 @@ function clearEntry() {
   workingNumber = '';
   /** different treatement needed if the statement display has spaces or not */
   if (statement.search(/\s/) === -1) { //no spaces present === -1
-    statement = '';
+    statement = ''; //clears full statement
   } else {
-    // Looks for the last space charter and slices from there to the end
+    // Looks for the last space charater and slices from there to the end
+    // this leaves the operator and any previous entries in statement.
     statement = statement.slice(0, statement.lastIndexOf(' ')) + ' ';
   }
 
@@ -207,6 +249,10 @@ function clearEntry() {
   return;
 }
 
+/**
+ * Closes the modal with the divide by zero error message and restores the
+ * normal click and keyboard event listeners.
+ */
 function closeModal() {
   document.querySelector('#modal').style.display = 'none';
   document.querySelector('.buttons').addEventListener('click', handleClick);
@@ -219,17 +265,17 @@ function closeModal() {
  */
 function filterKeyboard(operatorId) {
   if (operatorId.match(/[+\-/*^]/g) === null){
-    console.log('no operator');
     return false;
   }
-  console.log('is operator');
   return true;
 }
 
-
+/**
+ * Inverts the working number, or the number shown in the result display
+ */
 function invertNumber() {
-  /**Allow the result (workingNumber) to be inverted and used in the next calculation
-  * but not if it is a 0 or empty.
+  /**Allow the result shown on the display to be inverted and used in the next calculation
+  * but not if it is a 0 or empty if the working number is empty.
   */
   if (workingNumber === '' &&
       document.querySelector('#result').textContent !== '' &&
@@ -240,41 +286,42 @@ function invertNumber() {
     updateDisplay();
   }
 
-  //Don't invert a non number or 0
+  //Don't invert a non-number or 0
   if (workingNumber === '' || parseFloat(workingNumber) === 0 ) {
-    console.log('invert return');
     return;
   }
 
-  console.log('test');
   workingNumber = 1 / parseFloat(workingNumber);
-
   workingNumber = workingNumber.toString();
 
   /** different treatment required if spaces are present */
-  if (statement.search(/\s/) === -1) { // No spaces present = true
+  if (statement.search(/\s/) === -1) { // No spaces present ==== -1 (true)
     statement = limitDecimalPlaces(workingNumber, 3);
   } else {
-      
       statement = statement.slice(0, statement.lastIndexOf(' ')) + ' ' +
           limitDecimalPlaces(workingNumber, 3);
   }
 
   updateDisplay(statement, resultDisplay);
 }
-/** Launces the modal with the divide by zero error message */
-function displayZeroErrorMsg() {
-  console.log('launchModal');
-  document.querySelector('#modal').style.display = 'flex';
 
+/**
+ * Launces the modal with the divide by zero error message
+ */
+function displayZeroErrorMsg() {
+  document.querySelector('#modal').style.display = 'flex';
   /**Remove event listeners to prevent trying to calcualte behind the modal */
   document.querySelector('.buttons').removeEventListener('click', handleClick);
   document.removeEventListener('keydown', handleKeyboard);
-
   document.addEventListener('keydown', closeModal, {once: true});
-  
 }
 
+/**
+ * Launches the toast message at the bottom of the screen to show various 
+ * warnings or information. The message shown is determined by what is passed
+ * to the function in the purpsoe parameter.
+ * @param {string} purpose - used to determine the message and classes for the toast
+ */
 function launchToast(purpose) {
   switch (purpose) {
     case 'excessDigits':
