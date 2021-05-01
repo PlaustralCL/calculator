@@ -259,17 +259,6 @@ function closeModal() {
   document.addEventListener('keydown', handleKeyboard);
 }
 
-/** Filters out non-operator keyboard events. Other allowed keyboard events
- * are already accounted for in the directListnerEvent() function. If no 
- * operator is dectector returns false so the event can be ignored.
- */
-function filterKeyboard(operatorId) {
-  if (operatorId.match(/[+\-/*^]/g) === null){
-    return false;
-  }
-  return true;
-}
-
 /**
  * Inverts the working number, or the number shown in the result display
  */
@@ -462,12 +451,6 @@ function processNumberButton(numberId) {
 }
 
 function processOperatorButton(operatorId) {
-  /** Filters out non-allowed keys and returns with no action if a nonallowed
-   * key is detected.
-   */
-  if (filterKeyboard(operatorId) === false) {
-    return;
-  }
   /** See processOperator-tables.md in the planning folder for more detail
    * on the conditions.
    */
