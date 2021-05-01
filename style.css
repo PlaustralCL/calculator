@@ -4,14 +4,14 @@
     default text: #f8f8f2
     background: #282a36
     operator text: #50fa7b
-    warning: #ff5555
-    caution: #f1fa8c
+    warning text: #ff5555
+    caution text: #f1fa8c
     display/ screen background: #bcc2cd
     calculator body: #44475a
   
   Fonts
     calculator display: 'Inconsolata', monospace;
-    modal and toast messages: sans-serif;
+    buttons, modal, and toast messages: 'Roboto', sans-serif;
 */
 
 .body {
@@ -111,6 +111,7 @@
   margin: 2px;
   background-color: #282a36;
   color: #f8f8f2;
+  font-family: 'Roboto', sans-serif;
   font-size: 16px;
   font-weight: bold;
 }
@@ -173,7 +174,7 @@
   border-color: #ff5555;
   border-style: solid;
   color: #ff5555;
-  font-family: sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 36px;
   text-align: center;
 }
@@ -254,7 +255,7 @@
   background-color: #44475a; 
   border-radius: 9999px; /* Rounded borders */
   color: #f8f8f2; 
-  font-family: sans-serif;
+  font-family: 'Roboto', sans-serif;
   text-align: center; /* Centered text */
 }
 
