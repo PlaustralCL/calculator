@@ -459,16 +459,15 @@ function processNumberButton(numberId) {
   return;
 }
 
-/**
- * Determines what to do if an operator button add, subtract, multiply, divide,
- * or exponent, is pressed. This depends on the status of the storedNumber and
- * the workingNumber, and if an operator is already active.
- * @param {string} operatorId 
- */
-function processOperatorButton(operatorId) {
-  /** See processOperator-tables.md in the planning folder for more detail
-   * on the conditions.
+  /**
+   * Determines what to do if an operator button add, subtract, multiply, divide,
+   * or exponent, is pressed. This depends on the status of the storedNumber and
+   * the workingNumber, and if an operator is already active.
+   * @param {string} operatorId 
    */
+  function processOperatorButton(operatorId) {
+  // See processOperator-tables.md in the planning folder for more detail
+  // on the conditions.
 
   /** Conditon 1
    * Initial state: 0 1 0 
